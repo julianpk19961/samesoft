@@ -1,4 +1,3 @@
-
 <x-guest-layout>
     <x-authentication-card>
         <x-slot name="logo">
@@ -11,14 +10,20 @@
             @csrf
 
             <div>
+                <x-label for="document" value="{{ __('Documento') }}" />
+                <x-input id="document" class="block mt-1 w-full" type="text" name="document" :value="old('document')" required
+                    autofocus autocomplete="document" />
+            </div>
+
+            <div>
                 <x-label for="name" value="{{ __('Nombre') }}" />
-                <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required
-                    autofocus autocomplete="name" />
+                <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')"
+                    required autofocus autocomplete="name" />
             </div>
 
             <div>
                 <x-label for="last_name" value="{{ __('Apellido') }}" />
-                <x-input id="last_name" class="block mt-1 w-full" type="text" nam_e="last_name" :value="old('last_name')"
+                <x-input id="last_name" class="block mt-1 w-full" type="text" name="last_name" :value="old('last_name')"
                     required autocomplete="last_name" />
             </div>
 

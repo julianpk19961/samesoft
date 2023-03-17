@@ -18,9 +18,22 @@ class PeopleDataController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
         //
+        $table = new PeopleData();
+        $table->name = $request->name;
+        $table->name = $request->last_name;
+        $table->document = $request->document;
+        $table->document_city = $request->document_city;
+        $table->document_type_id = $request->document_type_id;
+        $table->regime_id = $request->regime_id;
+        $table->city = $request->city;
+        $table->legal_representation_id = $request->legal_representation_id;
+        $table->comments = $request->comments;
+        $table->born_date = $request->born_date;
+        $table->active = $request->active;
+        $table->save();
     }
 
     /**

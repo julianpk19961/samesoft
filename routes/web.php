@@ -17,7 +17,7 @@ use Livewire\Redirector;
 Route::get('/', function () {
     // return view('welcome');
     return view('auth.register');
-    // return Redirect()->route('dashboard');
+    return Redirect()->route('dashboard');
 });
 
 Route::middleware([
