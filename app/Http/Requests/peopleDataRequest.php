@@ -22,8 +22,7 @@ class peopleDataRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
-            'document' => 'required|unique:people_data, document|'
+            'document' => 'required|unique:people_data, document'
         ];
     }
 

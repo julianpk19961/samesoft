@@ -6,6 +6,7 @@ use App\Models\PeopleData;
 use App\Models\Team;
 use App\Models\User;
 use App\Actions\Fortify\Rule;
+use App\Http\Requests\peopleDataRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -26,27 +27,30 @@ class CreateNewUser implements CreatesNewUsers
     public function create(array $input): User
     {
 
+
         Validator::make($input, [
-            // 'document' => ['required', Rule::unique('unique:App\Models\people_data,document'), 'max:255'],
+            'document' => ['required', 'unique:people_data'],
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => $this->passwordRules(),
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
         ])->validate();
 
-        $peopleData = PeopleData::create($input);
-        return print_r($peopleData);
 
-        return DB::transaction(function () use ($input) {
+        $peopleData = PeopleData::create($input);
+        $peopledata_id = $peopleData['id'];
+
+        return DB::transaction(function () use ($input, $peopledata_id) {
             return tap(User::create([
                 'name' => $input['name'],
                 'email' => $input['email'],
-                'people_data_id' => 1,
+                'people_data_id' => $peopledata_id,
                 'password' => Hash::make($input['password']),
             ]), function (User $user) {
                 $this->createTeam($user);
             });
         });
+        
     }
 
     /**
