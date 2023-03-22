@@ -18,7 +18,26 @@
                 </div>
             </div>
 
+
+
             <div class="hidden sm:flex sm:items-center sm:ml-6">
+
+
+                <div class="ml-3 relative">
+                    <x-dropdown align="right" width="60">
+                        <x-slot name="trigger">
+                            <span class="inline-flex rounded-md">
+                                <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white">
+                                    {{ __('Áreas') }}
+                                </button>
+                            </span>
+                        </x-slot>
+                        <x-slot name="content">
+                            b
+                        </x-slot>
+                    </x-dropdown>
+                </div>
+
                 <!-- Teams Dropdown -->
                 @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
                     <div class="ml-3 relative">
@@ -148,9 +167,11 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
+
             <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
+                {{ __('Menu') }}
             </x-responsive-nav-link>
+
         </div>
 
         <!-- Responsive Settings Options -->
