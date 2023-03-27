@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MacroProcessesController;
 use Illuminate\Support\Facades\Route;
 use Livewire\Redirector;
 
@@ -23,7 +24,13 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified'
 ])->group(function () {
+
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+});
+
+Route::controller(MacroProcessesController::class)->middleware('auth')->group(function () {
+    Route::get('/macroprocesos', 'index')->name('macroprocess');
+    Route::post('/macroprocesos', 'store')->name('macroprocess.store');
 });

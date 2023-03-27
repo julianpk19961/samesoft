@@ -13,7 +13,7 @@ class macro_processes extends Model
     public function area(): HasMany
     {
         return $this->hasMany(areas::class);
-    }
+    } 
 
     public function children()
     {

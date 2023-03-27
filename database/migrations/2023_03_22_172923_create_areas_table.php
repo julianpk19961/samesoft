@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('areas', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('macro_process_id');
-            $table->string('nombre');
+            $table->string('name');
             $table->string('description')->nullable();
             $table->foreign('macro_process_id')->references('id')->on('macro_processes');
             $table->timestamps();

@@ -28,6 +28,7 @@ return new class extends Migration
             $table->tinyInteger('age')->default(0);
             $table->boolean('active')->default(1);
             $table->timestamps();
+            
         });
     }
 
