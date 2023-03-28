@@ -10,10 +10,12 @@ class macro_processes extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['name', 'description', 'macroprocess_id'];
+
     public function area(): HasMany
     {
         return $this->hasMany(areas::class);
-    } 
+    }
 
     public function children()
     {

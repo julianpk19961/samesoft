@@ -32,5 +32,5 @@ Route::middleware([
 
 Route::controller(MacroProcessesController::class)->middleware('auth')->group(function () {
     Route::get('/macroprocesos', 'index')->name('macroprocess');
-    Route::post('/macroprocesos', 'store')->name('macroprocess.store');
+//     // Route::post('/macroprocesos-guardado', 'store')->name('macroprocess.store');
 });

@@ -13,7 +13,7 @@ class MacroProcessesController extends Controller
     {
         //
         $macroProcesses = macro_processes::all();
-        return  view('macroprocesses.show', ['macroProcesses' => $macroProcesses]);
+        return  view('macroprocesses.show', compact('macroProcesses'));
     }
 
     public function create(Request $request)
@@ -24,8 +24,6 @@ class MacroProcessesController extends Controller
     public function store(Request $request)
     {
         //
-        dd($request);
-        
         Validator::make($request, [
             'name' => ['required', 'unique:macro_processes'],
         ])->validate();
