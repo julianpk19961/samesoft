@@ -30,7 +30,9 @@ Route::middleware([
     })->name('dashboard');
 });
 
-Route::controller(MacroProcessesController::class)->middleware('auth')->group(function () {
-    Route::get('/macroprocesos', 'index')->name('macroprocess');
-//     // Route::post('/macroprocesos-guardado', 'store')->name('macroprocess.store');
-});
+Route::get('/macroprocesos', function () {
+
+    $macroProcesses = App\Models\macro_processes::all();
+    return  view('macroprocesses.show', compact('macroProcesses'));
+    
+})->name('macroprocess')->middleware('auth');

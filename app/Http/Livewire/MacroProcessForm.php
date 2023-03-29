@@ -23,17 +23,13 @@ class MacroProcessForm extends Component
         ]);
 
         macro_processes::create([
-            'name' => $this->name,
+            'name' => strtoupper($this->name),
             'description' => $this->description,
             'macroprocess_id' => $this->macroprocess_id
         ]);
-        // $macroProcess = new macro_processes();
-        // $macroProcess->name = $this->name;
-        // $macroProcess->description = $this->description;
-        // $macroProcess->macroprocess_id = $this->macroprocess_id;
-        // $macroProcess->save();
 
         $this->clear();
+        session()->flash('message', 'El registro has sido guardado de forma exitosa');
     }
 
     public function clear()
@@ -43,8 +39,14 @@ class MacroProcessForm extends Component
         $this->description = '';
     }
 
+    public function macroProcessesListSet()
+    {
+        $this->emit('updateList');
+    }
+
     public function render()
     {
+        $this->macroProcessesListSet();
         $macroProcesses = macro_processes::all();
         return view('livewire.macro-process-form', compact('macroProcesses'));
     }
