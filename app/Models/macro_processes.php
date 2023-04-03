@@ -26,4 +26,5 @@ class macro_processes extends Model
     {
         return $this->belongsTo(Self::class, 'id');
     }
+    
 }

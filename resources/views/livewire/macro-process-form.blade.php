@@ -14,7 +14,6 @@
                 <div
                     class="px-4 py-5 bg-white sm:p-6 shadow {{ !isset($create) ? 'sm:rounded-tl-md sm:rounded-tr-md' : 'sm:rounded-tr-md' }} ">
 
-
                     <div class="col-span-12 sm:col-span-10">
                         <x-label for="name" value="{{ __('Name') }}" />
                         <x-input id="name" type="text" class="mt-1 block w-full" wire:model="name"

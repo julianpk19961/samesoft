@@ -31,8 +31,6 @@ Route::middleware([
 });
 
 Route::get('/macroprocesos', function () {
-
     $macroProcesses = App\Models\macro_processes::all();
     return  view('macroprocesses.show', compact('macroProcesses'));
-    
 })->name('macroprocess')->middleware('auth');

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg version="1.1" id="Layer_1" x="0px" y="0px" width="100%" viewBox="0 0 512 512"
-    enable-background="new 0 0 512 512" xml:space="preserve" sodipodi:docname="satisfaccion_v1.svg"
+<svg version="1.1" id="Layer_1" x="0px" y="0px" width="{{ $width ?? 512 }}" height="{{ $height ?? 512 }}"
+    viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve" sodipodi:docname="satisfaccion_v1.svg"
     inkscape:version="1.2.2 (732a01da63, 2022-12-09)" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
     xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns="http://www.w3.org/2000/svg"
     xmlns:svg="http://www.w3.org/2000/svg">
     <defs id="defs33" />
+
     <sodipodi:namedview id="namedview31" pagecolor="#ffffff" bordercolor="#000000" borderopacity="0.25"
         inkscape:showpageshadow="2" inkscape:pageopacity="0.0" inkscape:pagecheckerboard="0"
         inkscape:deskcolor="#d1d1d1" showgrid="false" inkscape:zoom="1.6191406" inkscape:cx="256.61761"

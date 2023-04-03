@@ -25,7 +25,7 @@ class MacroProcessForm extends Component
         macro_processes::create([
             'name' => strtoupper($this->name),
             'description' => $this->description,
-            'macroprocess_id' => $this->macroprocess_id
+            'macroprocess_id' => isset($this->macroprocess_id) ? $this->macroprocess_id : null
         ]);
 
         $this->clear();
