@@ -11,6 +11,7 @@
 
             @livewire('macro-process-form')
             <x-section-border />
+
             <div class="mt-10 sm:mt-0">
                 @livewire('macro-process-list')
             </div>

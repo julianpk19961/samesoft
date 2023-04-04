@@ -10,43 +10,74 @@
 
         <div class="mt-5 md:mt-0 md:col-span-2">
 
-            <form wire:submit.prevent="submit" action="/macroprocesos" class="w-full">
+            <form wire:submit.prevent="" class="w-full py-5">
                 <div
-                    class="px-4 py-5 bg-white sm:p-6 shadow {{ !isset($create) ? 'sm:rounded-tl-md sm:rounded-tr-md' : 'sm:rounded-tr-md' }} ">
+                    class="px-4 bg-white sm:p-6 shadow {{ !isset($create) ? 'sm:rounded-tl-md sm:rounded-tr-md' : 'sm:rounded-tr-md' }} ">
 
                     <div class="col-span-12 sm:col-span-10">
                         <x-label for="name" value="{{ __('Name') }}" />
-                        <x-input id="name" type="text" class="mt-1 block w-full" wire:model="name"
+                        <x-input id="name" type="text" class="mb-2 block w-full" wire:model="name"
                             autocomplete="name" />
                         <x-input-error for="name" class="mt-2" />
                     </div>
 
                     <div class="col-span-12 sm:col-span-10">
 
-                        <x-label for="macroprocess_id" value="{{ __('Asignado') }}" />
+                        <div class="flex gap-2">
+                            {{-- Macroprocesos --}}
+                            <div class="flex-col w-1/2">
+                                <x-label for="macroprocess_id" value="{{ __('Asignado') }}" />
 
-                        <x-input-selection id="macroprocess_id" name="macroprocess_id" class="mt-1- block w-full"
-                            wire:model="macroprocess_id">
+                                <x-input-selection id="macroprocess_id" name="macroprocess_id" class="mt-1 w-full mb-2"
+                                    wire:model="macroprocess_id">
 
-                            <option value="" class="text-gray-500">{{ __('SELECCION MACROPROCESO MAESTRO') }}
-                            </option>
+                                    <option value="" class="text-gray-500">
+                                        {{ __('SELECCION MACROPROCESO') }}
+                                    </option>
 
-                            @php
-                                $macroprocesses = App\Models\macro_processes::all();
-                            @endphp
+                                    @php
+                                        $macroprocesses = App\Models\macro_processes::all();
+                                    @endphp
 
-                            @if ($macroprocesses->count() > 0)
+                                    @if ($macroprocesses->count() > 0)
+                                        @foreach ($macroprocesses as $macroProcess)
+                                            <option value="{{ $macroProcess->id }}" class="text-gray-500">
+                                                {{ __("$macroProcess->name") }}</option>
+                                        @endforeach
+                                    @endif
 
-                                @foreach ($macroprocesses as $macroProcess)
-                                    <option value="{{ __($macroProcess->id) }}" class="text-gray-500">
-                                        {{ $macroProcess->name }}</option>
-                                @endforeach
+                                </x-input-selection>
+                                <x-input-error for="macroprocess_id" class="mt-2" />
+                            </div>
 
-                            @endif
+                            {{-- iconos --}}
+                            <div class="flex-col w-1/2">
+                                <x-label for="icon" value="{{ __('Icono') }}" />
 
-                        </x-input-selection>
+                                <x-input-selection id="icon" name="icon" class="mt-1 w-full" wire:model="icon">
 
-                        <x-input-error for="macroprocess_id" class="mt-2" />
+                                    <option value="" class="text-gray-500 w-full">
+                                        {{ __('SELECCIONAR ICONO') }}
+                                    </option>
+
+                                    @if ($svgIcons->count() > 0)
+                                        @foreach ($svgIcons as $icon)
+                                            @php
+                                                $path = "svg.macroprocess.$icon";
+                                            @endphp
+                                            <option value="{{ $icon }}" class="flex items-center">
+                                                {{ strToUpper($icon) }}
+                                            </option>
+                                        @endforeach
+                                    @endif
+
+                                </x-input-selection>
+
+                                <x-input-error for="icon" class="mt-2" />
+
+
+                            </div>
+                        </div>
                     </div>
 
                     <div class="col-span-12 sm:col-span-10">
@@ -74,12 +105,30 @@
                 <div
                     class="flex items-center justify-end px-4 py-3 bg-gray-100 text-right sm:px-6 shadow sm:rounded-bl-md sm:rounded-br-md">
 
-
-
-                    <button type="submit"
-                        class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                    <x-button wire:click="$toggle('confirming')" wire:loading.attr="disabled">
                         {{ __('Guardar') }}
-                    </button>
+                    </x-button>
+
+                    <x-confirmation-modal wire:model="confirming">
+
+                        <x-slot name="title">
+                            {{ __('Guardar registro') }}
+                        </x-slot>
+
+                        <x-slot name="content">
+                            {{ __('¿Está seguro de crear el macroproceso?') }}
+                        </x-slot>
+
+                        <x-slot name="footer">
+                            <x-secondary-button wire:click="$toggle('confirming')" wire:loading.attr="disabled">
+                                {{ __('Cancelar') }}
+                            </x-secondary-button>
+
+                            <x-danger-button class="ml-2" wire:click="submit" wire:loading.attr="disabled">
+                                {{ __('Guardar') }}
+                            </x-danger-button>
+                        </x-slot>
+                    </x-confirmation-modal>
 
                 </div>
             </form>

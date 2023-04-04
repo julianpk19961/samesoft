@@ -10,7 +10,7 @@ class macro_processes extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'description', 'macroprocess_id'];
+    protected $fillable = ['name', 'description', 'macroprocess_id', 'icon'];
 
     public function area(): HasMany
     {
@@ -26,5 +26,4 @@ class macro_processes extends Model
     {
         return $this->belongsTo(Self::class, 'id');
     }
-    
 }
