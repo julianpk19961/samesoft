@@ -7,6 +7,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ URL::asset('img/favicon_32.png') }}">
     <title>{{ config('app.name', 'Samesoft') }}</title>
+    <link rel="stylesheet" href="{{ asset('css/all.min.css') }}">
+    <script defer src="{{ asset('js/all.min.js') }}"></script>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
