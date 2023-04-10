@@ -12,10 +12,15 @@ class MacroProcessList extends Component
 
     protected $listeners = ['updateList' => 'render'];
 
+    public function __construct()
+    {
+        $this->macroProcesses = macro_processes::all();
+    }
+
     public function render()
     {
 
         // 
-        return view('livewire.macro-process-list');
+        return view('livewire.macro-process-list', ['macroProcesses', $this->macroProcesses]);
     }
 }

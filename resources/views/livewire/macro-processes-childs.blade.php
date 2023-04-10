@@ -1,35 +1,29 @@
-<div class="flex gap gap-2 overflow-hidden">
-    <div wire:click="scrollLeft"
-        class="w-10 h-10 rounded-full bg-blue-300 flex items-center justify-center cursor-pointer">
-        <i class="fas fa-check text-red-600"></i>
-    </div>
-    <div class="flex gap gap-2" wire:ignore>
-        {{-- @if ($macroProcess->child)
+<div class="flex justify-between items-center overflow-hidden gap-2">
+    <button wire:click="moveLeft" class="w-10 h-10 rounded-full bg-slate-300 flex-shrink-0">
+        ←
+    </button>
+    <div class="grid grid-cols-6 max-w-full gap-2" wire:ignore style="transform: translateX({{ -$position * 100 }}%)">
+
+        @if ($items->count() > 0)
+
+            @foreach ($items as $child)
+                <div class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center">
+                    <i class="fas fa-home text-red-600" title="{{ $child->name }}"></i>
+                </div>
+            @endforeach
+
+        @endif
+
+        @php($i = $items->count() > 0 ? $items->count() : 0)
+
+        @while ($i < 6)
             <div class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center">
-                <i class="fas fa-home text-red-600">A</i>
+                <i class="fa-solid fa-border-none"></i>
             </div>
-        @endif --}}
-        <div class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center">
-            <i class="fas fa-home text-gray-600">A</i>
-        </div>
-        <div class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center">
-            <i class="fas fa-cog text-gray-600"></i>
-        </div>
-        <div class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center">
-            <i class="fas fa-users text-gray-600"></i>
-        </div>
-        <div class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center">
-            <i class="fas fa-globe text-gray-600"></i>
-        </div>
-        <div class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center">
-            <i class="fas fa-shopping-cart text-gray-600"></i>
-        </div>
-        <div class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center">
-            <i class="fas fa-music text-gray-600"></i>
-        </div>
+            @php($i = $i + 1)
+        @endwhile
     </div>
-    <div wire:click="scrollRight"
-        class="w-10 h-10 rounded-full bg-blue-300 flex items-center justify-center cursor-pointer">
-        <i class="fas fa-chevron-right text-gray-600"></i>
-    </div>
+    <button wire:click="moveRight" class="w-10 h-10 rounded-full bg-slate-300 flex-shrink-0">
+        →
+    </button>
 </div>

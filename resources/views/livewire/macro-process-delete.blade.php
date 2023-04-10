@@ -1,5 +1,6 @@
-<x-button wire:click="$toggle('deleteConfirm')" wire:loading.attr="disabled" class="bg-red-600">
-    {{ __('Eliminar') }}
+<x-button wire:click="$toggle('deleteConfirm')" wire:loading.attr="disabled" class="bg-red-600 flex-shrink-0"
+    title="Eliminar/Inactivar Registro">
+    <i class="fa-solid fa-trash"></i>
 </x-button>
 
 <x-confirmation-modal wire:model="deleteConfirm">

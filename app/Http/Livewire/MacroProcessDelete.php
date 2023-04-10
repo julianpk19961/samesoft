@@ -9,7 +9,7 @@ use app\Models\macro_processes;
 class MacroProcessDelete extends Component
 {
 
-    public $macroProcesses, $deleteConfirm = false;
+    public $macroProcesses, $deleteConfirm = false, $delIcon;
 
     public function __construct($macroProcesses)
     {
@@ -17,6 +17,11 @@ class MacroProcessDelete extends Component
         $this->macroProcesses = macro_processes::find($macroProcesses);
     }
 
+
+    public function mount()
+    {
+        $this->delIcon = 'fa-regular fa-trash';
+    }
 
     public function delete(macro_processes $deleteMacroProcess)
     {
@@ -35,6 +40,7 @@ class MacroProcessDelete extends Component
 
     public function render()
     {
-        return view('livewire.macro-process-delete');
+        $delIcon = $this->delIcon;
+        return view('livewire.macro-process-delete', compact('delIcon'));
     }
 }
