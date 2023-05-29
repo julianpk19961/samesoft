@@ -11,8 +11,8 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ URL::asset('img/favicon_32.png') }}">
-    <link rel="stylesheet" href="{{ asset('css/all.min.css') }}">
-    <script defer src="{{ asset('js/all.min.js') }}"></script>
+    {{-- <link rel="stylesheet" href="{{ asset('css/all.min.css') }}">
+    <script defer src="{{ asset('js/all.min.js') }}"></script> --}}
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
     <script src="https://kit.fontawesome.com/abd130ae28.js" crossorigin="anonymous"></script>
 
@@ -21,6 +21,7 @@
 
     <!-- Styles -->
     @livewireStyles
+
 </head>
 
 <body class="font-sans antialiased">

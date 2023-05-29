@@ -32,6 +32,8 @@ class MacroProcessForm extends Component
 
         $this->clear();
         session()->flash('message', 'El registro has sido guardado de forma exitosa');
+        $this->macroProcessesListSet();
+        
     }
 
     public function clear()
@@ -57,7 +59,6 @@ class MacroProcessForm extends Component
 
     public function render()
     {
-        $this->macroProcessesListSet();
         $macroProcesses = macro_processes::all();
         $svgIcons = $this->getIcons();
         return view('livewire.macro-process-form', compact('macroProcesses', 'svgIcons'));

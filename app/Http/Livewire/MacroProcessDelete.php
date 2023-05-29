@@ -18,11 +18,6 @@ class MacroProcessDelete extends Component
     }
 
 
-    public function mount()
-    {
-        $this->delIcon = 'fa-regular fa-trash';
-    }
-
     public function delete(macro_processes $deleteMacroProcess)
     {
         DB::transaction(function () use ($deleteMacroProcess) {
@@ -41,6 +36,6 @@ class MacroProcessDelete extends Component
     public function render()
     {
         $delIcon = $this->delIcon;
-        return view('livewire.macro-process-delete', compact('delIcon'));
+        return view('livewire.macro-process-delete');
     }
 }

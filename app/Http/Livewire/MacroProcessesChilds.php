@@ -10,25 +10,30 @@ class MacroProcessesChilds extends Component
 
 
     // listado de items
-    public $styles = ['https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css'];
-    public $position = 0, $items;
+    // public $styles = ['https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css'];
+    // public $position = 0, $items, $empty= [];
+    public $activeTab;
+    public $tabs;
+    public $items;
 
-
-    public function moveLeft()
+    public function setActiveTab($index)
     {
-        $this->position = max($this->position - 1, 0);
+        $this->activeTab = $index;
     }
 
-    public function moveRight()
+    public function mount()
     {
-        $this->position = min($this->position + 1, count($this->items) - 8);
-    }
+        $this->tabs = [
+            'Macroprocesos' => 'Contenido de la Pestaña 1',
+            'Areas' => 'Contenido de la Pestaña 2',
+            'Politicas' => 'Contenido de la Pestaña 3',
+        ];
 
+        $this->activeTab = 'Macroprocesos';
+    }
 
     public function render()
     {
-        return view('livewire.macro-processes-childs', [
-            'items' => $this->items
-        ]);
+        return view('livewire.macro-processes-childs');
     }
 }

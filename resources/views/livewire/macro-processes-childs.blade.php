@@ -1,29 +1,59 @@
-<div class="flex justify-between items-center overflow-hidden gap-2">
-    <button wire:click="moveLeft" class="w-10 h-10 rounded-full bg-slate-300 flex-shrink-0">
-        ←
-    </button>
-    <div class="grid grid-cols-6 max-w-full gap-2" wire:ignore style="transform: translateX({{ -$position * 100 }}%)">
-
-        @if ($items->count() > 0)
-
-            @foreach ($items as $child)
-                <div class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center">
-                    <i class="fas fa-home text-red-600" title="{{ $child->name }}"></i>
+<div class="flex justify-center">
+    <div class="border border-gray-300 rounded-lg">
+        <div class="flex">
+            @foreach ($tabs as $tabTitle => $tabContent)
+                <div class="px-4 py-2 cursor-pointer
+                    @if ($activeTab === $tabTitle) text-blue-500 bg-gray-200
+                    @else
+                        text-gray-500 @endif"
+                    wire:click="setActiveTab('{{ $tabTitle }}')">
+                    {{ $tabTitle }}
                 </div>
             @endforeach
 
-        @endif
-
-        @php($i = $items->count() > 0 ? $items->count() : 0)
-
-        @while ($i < 6)
-            <div class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center">
-                <i class="fa-solid fa-border-none"></i>
+            <div class="flex-grow"></div>
+            <div class="px-4 py-2 cursor-pointer text-gray-500 bg-gray-200">
+                &nbsp;
             </div>
-            @php($i = $i + 1)
-        @endwhile
+        </div>
+        <div class="p-4">
+            @if ($activeTab)
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white border border-gray-300">
+                        <thead>
+                            <tr>
+                                <th class="py-2 px-4 border-b border-gray-300 font-medium text-gray-700">Nombre</th>
+                                <th class="py-2 px-4 border-b border-gray-300 font-medium text-gray-700">Encargado</th>
+                                <th class="py-2 px-4 border-b border-gray-300 font-medium text-gray-700">Descripción</th>
+                                <th class="py-2 px-4 border-b border-gray-300 font-medium text-gray-700">opciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if ($items->isEmpty())
+                                @for ($i = 0; $i < 3; $i++)
+                                    <tr>
+                                        <td class="py-2 px-4 border-b border-gray-300 empty-cell" colspan="3">&nbsp;</td>
+                                        <td class="py-2 px-4 border-b border-gray-300">
+                                            <button class="bg-gray-300 text-gray-500 font-semibold py-2 px-4 rounded w-full" disabled>Eliminar</button>
+                                        </td>
+                                    </tr>
+                                @endfor
+                            @else
+                                @foreach ($items as $item)
+                                    <tr>
+                                        <td class="py-2 px-4 border-b border-gray-300">{{ $item->column1 }}</td>
+                                        <td class="py-2 px-4 border-b border-gray-300">{{ $item->column2 }}</td>
+                                        <td class="py-2 px-4 border-b border-gray-300">{{ $item->column3 }}</td>
+                                        <td class="py-2 px-4 border-b border-gray-300">
+                                            <button class="bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded">Eliminar</button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+            @endif
+        </div>
     </div>
-    <button wire:click="moveRight" class="w-10 h-10 rounded-full bg-slate-300 flex-shrink-0">
-        →
-    </button>
 </div>

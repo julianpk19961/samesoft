@@ -21,6 +21,6 @@ class MacroProcessList extends Component
     {
 
         // 
-        return view('livewire.macro-process-list', ['macroProcesses', $this->macroProcesses]);
+        return view('livewire.macro-process-list', ['macroProcesses' => $this->macroProcesses]);
     }
 }

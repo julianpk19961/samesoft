@@ -1,6 +1,5 @@
 import './bootstrap';
 
-import Vue from 'vue';
 import Alpine from 'alpinejs';
 import focus from '@alpinejs/focus';
 
