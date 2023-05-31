@@ -6,15 +6,10 @@ use Livewire\Component;
 
 class MacroProcessesChilds extends Component
 {
-
-
-
-    // listado de items
-    // public $styles = ['https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css'];
-    // public $position = 0, $items, $empty= [];
     public $activeTab;
     public $tabs;
     public $items;
+    public $maxNameLength;
 
     public function setActiveTab($index)
     {
@@ -34,6 +29,19 @@ class MacroProcessesChilds extends Component
 
     public function render()
     {
-        return view('livewire.macro-processes-childs');
+        $maxNameLength = 0;
+        foreach ($this->items as $item) {
+            $nameLength = strlen($item->name);
+            $maxNameLength = max($maxNameLength, $nameLength);
+        }
+
+        $items = $this->items->map(function ($item) use ($maxNameLength) {
+            $item->paddedName = str_pad(strtolower($item->name), $maxNameLength, ' ');
+            return $item;
+        });
+
+        return view('livewire.macro-processes-childs', [
+            'items' => $items,
+        ]);
     }
 }

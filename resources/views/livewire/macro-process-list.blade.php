@@ -10,7 +10,6 @@
         <ul class="divide-y divide-gray-200 border">
             @foreach ($macroProcesses as $macroProcess)
                 <li class="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 p-2">
-
                     <div class="flex flex-col md:flex-row items-center justify-center w-2/5">
                         <div class="flex flex-col items-center justify-center w-full md:w-1/2">
                             <div class="w-10 h-10 flex items-center justify-center">
@@ -36,8 +35,8 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-col md:flex-row items-center justify-center md:items-start md:justify-start w-3/5 space-y-2">
-                        <div class="w-full">
+                    <div class="flex flex-col w-3/5">
+                        <div class="w-full max-w-lg">
                             @livewire('macro-processes-childs', ['items' => $macroProcess->children])
                         </div>
                         
