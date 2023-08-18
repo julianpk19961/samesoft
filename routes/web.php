@@ -26,11 +26,14 @@ Route::middleware([
 ])->group(function () {
 
     Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+        return  view('dashboard');
+    })->name('dashboard')->middleware('auth');
 });
 
 Route::get('/macroprocesos', function () {
-    $macroProcesses = App\Models\macro_processes::all();
-    return  view('macroprocesses.show', compact('macroProcesses'));
+    return  view('macroprocesses.show');
 })->name('macroprocess')->middleware('auth');
+
+Route::get('/areas', function () {
+    return view('areas.show');
+})->name('areas')->middleware('auth');

@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('comments')->nullable();
             $table->date('born_date')->nullable();
             $table->tinyInteger('age')->default(0);
-            $table->boolean('active')->default(1);
+            $table->boolean('active')->default(true);
             $table->timestamps();
             
         });

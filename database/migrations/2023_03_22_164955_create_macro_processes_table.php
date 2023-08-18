@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->foreign('macroprocess_id')->references('id')->on('macro_processes');
             $table->string('icon')->nullable();
+            $table->boolean('active')->default(true);
             $table->timestamps();   
         });
     }

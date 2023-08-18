@@ -1,50 +1,42 @@
 <div class="grid grid-cols-1 md:grid-cols-3">
     <div class="col-span-1 md:col-span-3 mb-1">
         <x-section-title>
-            <x-slot name="title">{{ __('Macroprocesos Registrados') }}</x-slot>
-            <x-slot name="description">{{ __('Listado de macroprocesos creados en el sistema') }}</x-slot>
+            <x-slot name="title">{{ __('Areas Registradas') }}</x-slot>
+            <x-slot name="description">{{ __('Listado de Areas creadas en el sistema') }}</x-slot>
         </x-section-title>
     </div>
     <div class="col-span-2 md:col-span-3 lg:col-span-3 bg-white rounded-tl-md rounded-tr-md shadow-sm p-1">
         <ul class="divide-y divide-gray-200 border custom-max-height overflow-y-auto">
-            @foreach ($this->macroProcesses as $macroProcess)
+            {{-- @dd($this->areas) --}}
+            @foreach ($this->areas as $area)
             <li class="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 p-2"
-                wire:key="{{ $macroProcess->id }}">
+                wire:key="{{ $area->id }}">
                 <div class="flex flex-col md:flex-row items-center justify-center w-2/5">
                     <div class="flex flex-col items-center justify-center w-full md:w-1/2">
-                        <div class="w-10 h-10 flex items-center justify-center">
-
-                            @isset($macroProcess->icon)
-                            @php( $icon = "svg.macroprocess.$macroProcess->icon" )
-                            <x-dynamic-component :component="$icon" width="100%" height="100%" class="flex-shrink-0" />
-                            @endisset
-
-                        </div>
                         <div class="text-sm font-bold truncate whitespace-normal text-center w-full">
-                            <span class="text-xs md:text-sm">{{ $macroProcess->name . ' ' . $macroProcess->childs
+                            <span class="text-xs md:text-sm">{{ $area->name . ' ' . $area->childs
                                 }}</span>
                         </div>
                         <div class="flex items-center justify-center gap-2 border-t-1 mt-2">
 
-                            @livewire('macro-process-delete', ['macroProcess' => $macroProcess], key($macroProcess->id))
-
-                            {{-- wire:click="showMacroProcessDetails({{ $macroProcess->id }}) --}}
-                            <x-button {{-- wire:click="$toggle('showModal')" --}}
-                                wire:click="showMacroProcessDetails({{ $macroProcess->id }})"
-                                wire:loading.attr="disabled" class="bg-green-600 text-white">
+                            <x-button wire:click="deleteArea({{ $area->id }})" wire:loading.attr="disabled"
+                                title="Eliminar Área" class="bg-red-600 text-white">
+                                <i class="fa-solid fa-trash"></i>
+                            </x-button>
+                            {{-- wire:click="showareaDetails({{ $area->id }}) --}}
+                            <x-button wire:click="showAreasDetails({{ $area->id }})" wire:loading.attr="disabled"
+                                class="bg-green-600 text-white">
                                 <i class="fa-solid fa-eye"></i>
                             </x-button>
 
-                            <x-button wire:click="addMacroProcessDetails({{ $macroProcess->id }})"
-                                class="bg-cyan-500 text-sm" title="Agregar Macroproceso"
-                                id="add-{{ $macroProcess->id }}">
+                            <x-button wire:click="addareaDetails({{ $area->id }})" class="bg-cyan-500 text-sm"
+                                title="Agregar Macroproceso" id="add-{{ $area->id }}">
                                 <i class="fa fa-solid fa-circle-plus"></i>
                             </x-button>
 
                         </div>
                     </div>
                 </div>
-
                 <div class="flex flex-col w-3/5">
                     <div class="w-full max-w-lg">
                         <div class="flex justify-center">
@@ -74,24 +66,21 @@
                                                         rowspan="2">
                                                         Nombre
                                                     </th>
-                                                    <th
-                                                        class="py-2 px-4 border-gray-300 font-medium text-white bg-gray-800">
-                                                        Encargado
-                                                    </th>
+
                                                     <th
                                                         class="py-2 px-4 border-gray-300 font-medium text-white bg-gray-800">
                                                         Descripción
                                                     </th>
                                                     <th
-                                                        class="py-2 px-4 border-gray-300 font-medium text-white bg-gray-800">
+                                                        class="py-2 px-4 border-gray-300 font-medium text-white bg-gray-800 text-center">
                                                         opciones
                                                     </th>
                                                 </tr>
                                             </thead>
                                             <tbody class="border">
-
-                                                @if ( $macroProcess->children->isEmpty())
+                                                @if (!$area->parents)
                                                 @for ($i = 0; $i < 2; $i++) <tr>
+
                                                     <td class="py-2 px-4 border-b border-gray-100 empty-cell whitespace-normal break-words text-xs text-center bg-gray-300"
                                                         colspan="4">&nbsp;
                                                         No se encontraron registros
@@ -100,31 +89,38 @@
                                                     </tr>
                                                     @endfor
                                                     @else
-                                                    @foreach ( $macroProcess->children as $item)
                                                     <tr class="text-xs">
                                                         <td class="py-2 px-4 border-b border-gray-150 whitespace-normal break-words"
                                                             style="width: {{ $maxNameLength }}rem;"
-                                                            title="{{ $item->name }}@isset($item->description): {{ $item->description }}@endisset">
-                                                            {{ Str::upper($item->name )
+                                                            title="{{ $area->parents->name }}@isset($area->parents->description): {{ $area->parents->description }}@endisset">
+                                                            {{ Str::upper($area->parents->name )
                                                             }}
                                                         </td>
-                                                        <td class="py-2 px-4 border-b border-gray-150">{{ $item->column2
-                                                            }}</td>
-                                                        <td class="py-2 px-4 border-b border-gray-150">
-                                                            {{ Str::limit(Str::lower($item->description), 10, '...') }}
-                                                        </td>
-                                                        <td class="py-2 px-4 border-b border-gray-150">
 
-                                                            <x-button wire:click="disableDelete({{ $item->id }})"
+                                                        <td class="py-2 px-4 border-b border-gray-150">
+                                                            {{ Str::limit(Str::lower($area->parents->description), 10,
+                                                            '...') }}
+                                                        </td>
+                                                        <td class="py-2 px-4 border-b border-gray-150 text-center">
+
+                                                            {{-- <x-button
+                                                                wire:click="disableDelete({{ $area->parents->id }})"
                                                                 wire:loading.attr="disabled"
                                                                 class="bg-red-600 flex-shrink-0"
                                                                 title="Eliminar/Inactivar Registro">
                                                                 <i class="fa-solid fa-trash"></i>
+                                                            </x-button> --}}
+
+                                                            <x-button
+                                                                wire:click="disableDelete({{ $area->parents->id }})"
+                                                                wire:loading.attr="disabled"
+                                                                class="bg-green-600 flex-shrink-0"
+                                                                title="Eliminar/Inactivar Registro">
+                                                                <i class="fa-solid fa-eye"></i>
                                                             </x-button>
 
                                                         </td>
                                                     </tr>
-                                                    @endforeach
                                                     @endif
                                             </tbody>
                                         </table>
@@ -145,7 +141,7 @@
 
             <x-confirmation-modal wire:model="showModal" class="bg-slate-100">
                 <x-slot name="title">
-                    {{ $selectedMacroProcessName }}
+                    {{ $selectedAreasName }}
                 </x-slot>
 
                 <x-slot name="content">
@@ -155,41 +151,26 @@
                         <div class="col-span-12 sm:col-span-10">
                             <x-label for="name" value="{{ __('Name') }}" />
                             <x-input id="name" type="text" class="mb-2 block w-full" autocomplete="name"
-                                value="{{ $selectedMacroProcessName  }}" :disabled="True" />
+                                value="{{ $selectedAreasName  }}" :disabled="True" />
                             <x-input-error for="name" class="mt-2" />
                         </div>
 
                         <div class="col-span-12 sm:col-span-10">
 
-                            <div class="flex gap-2">
-                                {{-- Macroprocesos --}}
-                                <div class="flex-col w-1/2">
-                                    <x-label for="macroprocess_id" value="{{ __('Asignado') }}" />
+                            {{-- Areas --}}
+                            <x-label for="area_id" value="{{ __('Asignado') }}" />
 
-                                    <x-input id="macroprocess_id" type="text" class="mb-2 block w-full"
-                                        autocomplete="name" value="{{ $selectedMacroProcessParent }}"
-                                        :disabled="True" />
-                                    <x-input-error for="macroprocess_id" class="mt-2" />
-                                </div>
-
-                                {{-- iconos --}}
-                                <div class="flex-col w-1/2">
-                                    <x-label for="icon" value="{{ __('Icono') }}" />
-                                    <x-input id="macroprocess_id" type="text" class="mb-2 block w-full"
-                                        autocomplete="name" value="{{ Str::upper($selectedMacroProcessIcon) }}"
-                                        :disabled="True" />
-                                    <x-input-error for="icon" class="mt-2" />
-
-                                </div>
-                            </div>
+                            <x-input id="area_id" type="text" class="mb-2 block w-full" autocomplete="name"
+                                value="{{ $selectedAreasParent }}" :disabled="True" />
+                            <x-input-error for="area_id" class="mt-2" />
                         </div>
 
                         <div class="col-span-12 sm:col-span-10">
                             <x-label for="description" value="{{ __('Descripción') }}" />
                             <textarea name="description" id="description" rows="3"
-                                title="descripción: {{ $selectedMacroProcessDescription }}"
+                                title="descripción: {{ $selectedAreasDescription }}"
                                 class="w-full mt-1 block border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                                readonly> {{ $selectedMacroProcessDescription }}</textarea>
+                                readonly> {{ $selectedAreasDescription }}</textarea>
                             <x-input-error for="description" class="mt-2" />
                         </div>
 
@@ -215,9 +196,9 @@
                         {{ __('Cerrar') }}
                     </x-secondary-button>
 
-                    <x-button class="ml-2" wire:click="submit" wire:loading.attr="disabled" color="green">
+                    {{-- <x-button class="ml-2" wire:click="submit" wire:loading.attr="disabled" color="green">
                         {{ __('Guardar') }}
-                    </x-button>
+                    </x-button> --}}
                 </x-slot>
             </x-confirmation-modal>
 
@@ -228,13 +209,13 @@
 
                 <x-slot name="content">
                     <div class="modal-content py-4 text-left px-6">
-                        @if($showAddRecordsModal && $macroProcessList && count($macroProcessList) > 0)
-                        @foreach($macroProcessList as $index => $item)
+                        @if($showAddRecordsModal && $areaList && count($areaList) > 0)
+                        @foreach($areaList as $index => $item)
                         <div class="flex items-center">
                             <span class="flex-grow @if($index %2 == 0) text-black-800 @else text-gray-800 @endif m-2">{{
                                 $item->name }}</span>
                             <input type="checkbox" class="form-checkbox text-blue-500 h-4 w-4 mr-2"
-                                wire:model="macroProcessCheckedList" value="{{ $item->id }}">
+                                wire:model="areaCheckedList" value="{{ $item->id }}">
 
                         </div>
                         <hr class="border-t border-gray-300 m-1 w-full">
@@ -243,7 +224,7 @@
                         <p class="text-gray-500">No hay elementos disponibles.</p>
                         @endif
                     </div>
-                    <p>{{ count($macroProcessCheckedList) }} elementos seleccionados.</p>
+                    <p>{{ count($areasCheckedList) }} elementos seleccionados.</p>
 
                 </x-slot>
 
@@ -252,8 +233,7 @@
                         {{ __('Cerrar') }}
                     </x-secondary-button>
 
-                    <x-button class="ml-2" wire:click="AddRecordsMacroprocess" wire:loading.attr="disabled"
-                        color="green">
+                    <x-button class="ml-2" wire:click="AddRecordsarea" wire:loading.attr="disabled" color="green">
                         {{ __('Guardar') }}
                     </x-button>
                 </x-slot>
@@ -267,21 +247,4 @@
             /* Establece la altura máxima deseada */
         }
     </style>
-
-    {{-- <script>
-        document.addEventListener("DOMContentLoaded", function() {
-    Livewire.on("showAddRecordsModal", function(showAddRecordsModal) {
-        if (showAddRecordsModal) {
-            const checkboxes = document.querySelectorAll('.form-checkbox');
-            checkboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', function() {
-                    const itemId = this.getAttribute('data-item-id');
-                    console.log(itemId);
-                });
-            });
-        }
-    });
-});
-    </script> --}}
-
 </div>

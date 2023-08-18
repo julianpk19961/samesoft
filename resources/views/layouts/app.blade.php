@@ -2,16 +2,19 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-    <meta charset="utf-8">
+    {{-- <meta charset="utf-8"> --}}
+    <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'SAME') }}</title>
 
     <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
+    {{-- <link rel="preconnect" href="https://fonts.bunny.net"> --}}
     <link rel="icon" type="image/png" sizes="16x16" href="{{ URL::asset('img/favicon_32.png') }}">
-    {{-- <link rel="stylesheet" href="{{ asset('css/all.min.css') }}">
+    {{--
+    <link rel="stylesheet" href="{{ asset('css/all.min.css') }}">
     <script defer src="{{ asset('js/all.min.js') }}"></script> --}}
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
     <script src="https://kit.fontawesome.com/abd130ae28.js" crossorigin="anonymous"></script>
@@ -31,13 +34,13 @@
         @livewire('navigation-menu')
 
         <!-- Page Heading -->
-        @if (isset($header))
-            <header class="bg-white shadow">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    {{ $header }}
-                </div>
-            </header>
-        @endif
+        @isset($header)
+        <header class="bg-gray-500 shadow border-t-2">
+            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 text-white">
+                {{ $header }}
+            </div>
+        </header>
+        @endisset
 
         <!-- Page Content -->
         <main>

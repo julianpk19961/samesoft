@@ -2,9 +2,9 @@
     <div class="md:grid md:grid-cols-3 md:gap-6">
 
         <x-section-title>
-            <x-slot name="title">{{ __('Nuevo Macroprocesos') }}</x-slot>
+            <x-slot name="title">{{ __('Crear Área') }}</x-slot>
             <x-slot name="description">
-                {{ __('A continuación podrá ver un formulario de creación para agregar uno o más macroprocesos según sea
+                {{ __('A continuación podrá ver un formulario de creación para agregar una o más áreas según sea
                 necesario.') }}
             </x-slot>
         </x-section-title>
@@ -24,49 +24,24 @@
 
                     <div class="col-span-12 sm:col-span-10">
 
-                        <div class="flex gap-2">
-                            {{-- Macroprocesos --}}
-                            <div class="flex-col w-1/2">
-                                <x-label for="macroprocess_id" value="{{ __('Asignado') }}" />
+                        <x-label for="macro_process_id" value="{{ __('Asignado A') }}" />
 
-                                <x-input-selection id="macroprocess_id" name="macroprocess_id" class="mt-1 w-full mb-2"
-                                    wire:model="macroprocess_id">
+                        <x-input-selection id="macro_process_id" name="macro_process_id" class="mt-1 w-full mb-2"
+                            wire:model="macro_process_id">
 
-                                    <option value="" class="text-gray-500">
-                                        {{ __('Selección Macroproceso') }}
-                                    </option>
+                            <option value="" class="text-gray-500">
+                                {{ __('Selección Macroproceso') }}
+                            </option>
 
-                                    @if ($this->macroProcesses->count() > 0)
-                                    @foreach ($this->macroProcesses as $macroProcess)
-                                    <option value="{{ $macroProcess->id }}" class="text-gray-500">
-                                        {{ __("$macroProcess->name") }}</option>
-                                    @endforeach
-                                    @endif
 
-                                </x-input-selection>
-                                <x-input-error for="macroprocess_id" class="mt-2" />
-                            </div>
-
-                            {{-- iconos --}}
-                            <div class="flex-col w-1/2">
-                                <x-label for="icon" value="{{ __('Icono') }}" />
-                                <x-input-selection id="icon" name="icon" class="mt-1 w-full" wire:model="selectedIcon">
-                                    <option value="" class="text-gray-500 w-full">
-                                        {{ __('Selección Icono') }}
-                                    </option>
-                                    @isset($this->SvgIcons)
-                                    @foreach ($this->SvgIcons as $iconOption)
-                                    <option value="{{ $iconOption }}" class="flex items-center">
-                                        {{ strtoupper($iconOption) }}
-                                    </option>
-                                    @endforeach
-
-                                    @endisset
-                                </x-input-selection>
-                                <x-input-error for="icon" class="mt-2" />
-
-                            </div>
-                        </div>
+                            @if ($this->macroProcesses->count() > 0)
+                            @foreach ($this->macroProcesses as $macroProcess)
+                            <option value="{{ $macroProcess->id }}" class="text-gray-500">
+                                {{ __("$macroProcess->name") }}</option>
+                            @endforeach
+                            @endif
+                        </x-input-selection>
+                        <x-input-error for="macro_process_id" class="mt-2" />
                     </div>
 
                     <div class="col-span-12 sm:col-span-10">
@@ -109,7 +84,7 @@
                         </x-slot>
 
                         <x-slot name="content">
-                            {{ __('¿Está seguro de crear el macroproceso?') }}
+                            {{ __('¿Está seguro de crear el Area?') }}
                         </x-slot>
 
                         <x-slot name="footer">
