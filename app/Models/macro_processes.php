@@ -13,9 +13,9 @@ class macro_processes extends Model
     protected $fillable = ['name', 'description', 'macroprocess_id', 'icon'];
 
     public function areas(): HasMany
-{
-    return $this->hasMany(Areas::class, 'macro_process_id');
-}
+    {
+        return $this->hasMany(Areas::class, 'macro_process_id');
+    }
 
     public function children()
     {
@@ -25,5 +25,10 @@ class macro_processes extends Model
     public function parents()
     {
         return $this->belongsTo(Self::class, 'macroprocess_id');
+    }
+
+    public function documents()
+    {
+        return $this->morphMany(Documents::class, 'documentable');
     }
 }

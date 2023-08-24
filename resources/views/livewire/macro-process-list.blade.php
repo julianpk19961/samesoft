@@ -268,20 +268,6 @@
         }
     </style>
 
-    {{-- <script>
-        document.addEventListener("DOMContentLoaded", function() {
-    Livewire.on("showAddRecordsModal", function(showAddRecordsModal) {
-        if (showAddRecordsModal) {
-            const checkboxes = document.querySelectorAll('.form-checkbox');
-            checkboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', function() {
-                    const itemId = this.getAttribute('data-item-id');
-                    console.log(itemId);
-                });
-            });
-        }
-    });
-});
-    </script> --}}
+
 
 </div>
