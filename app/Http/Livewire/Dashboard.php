@@ -2,16 +2,30 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\areas;
 use Livewire\Component;
+use Livewire\WithFileUploads;
+
+use App\Models\areas;
 use App\Models\macro_processes;
-
+use App\Models\documents;
 use Illuminate\Support\Facades\Log;
-
+use Illuminate\Support\Facades\Storage;
+use League\CommonMark\Node\Block\Document;
 
 class Dashboard extends Component
 {
-    public $MacroProcesses, $filters, $currentKeyArea, $selectedArea, $showModal = false;
+    use WithFileUploads;
+
+    public $MacroProcesses, $filters, $currentKeyArea, $selectedItem, $showModal = false, $showModalNewDocument = false;
+    public $fileName, $fileDescription, $fileAttachment;
+
+    protected $rules = [
+        'fileName' => ['required', 'min:5'],
+        'fileAttachment' => ['required', 'file', 'max:5120'],
+    ];
+
+
+    protected $messages = ['file attachment' => 'Adjunto'];
 
     public function getMacroProcessesProperty()
     {
@@ -27,7 +41,8 @@ class Dashboard extends Component
     // areas $area
     public function showDocumentsAreas(areas $area)
     {
-        $this->selectedArea = $area;
+
+        $this->selectedItem = $area;
         $this->showModal = !$this->showModal;
     }
 
@@ -37,10 +52,59 @@ class Dashboard extends Component
 
         $this->showModal = !$this->showModal;
 
-        // if (isset($this->selectedArea)) {
+        // if (isset($this->selectedItem)) {
         // }elseif
     }
 
+    public function clear()
+    {
+
+        $this->fileName = '';
+        $this->fileDescription = '';
+        $this->fileAttachment = '';
+
+
+        // if (isset($this->selectedItem)) {
+        // }elseif
+    }
+
+    public function toggleAddNewDocument()
+    {
+
+        $this->showModal = !$this->showModal;
+        $this->showModalNewDocument = !$this->showModalNewDocument;
+
+        // if (isset($this->selectedItem)) {
+        // }elseif
+    }
+
+    public function upploadFile()
+    {
+
+        $this->validate();
+
+        $newFileName = $this->fileName . '.' . $this->fileAttachment->getClientOriginalExtension();
+        $attachmentPath = 'public/img/attachments/' . $newFileName;
+
+        $this->fileAttachment->storeAs('', $attachmentPath);
+
+        $document = new Documents();
+        $document->name = $this->fileName;
+        $document->description = $this->fileDescription ? $this->fileDescription : null;
+        $document->content = $attachmentPath;
+        $document->versionNumber = $this->selectedItem->documents()->count() + 1;
+        $document->user_id = auth()->user()->id;
+
+        $this->selectedItem->documents()->save($document);
+        $this->toggleAddNewDocument();
+    }
+
+    public function downloadFile($id)
+    {
+        $document = documents::findOrFail($id);
+        $path = $document->content;
+        return Storage::download($path);
+    }
 
     public function render()
     {

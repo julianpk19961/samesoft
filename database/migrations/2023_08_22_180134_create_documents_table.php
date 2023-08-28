@@ -14,11 +14,15 @@ return new class extends Migration
         Schema::create('documents', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('description');
-            $table->string('attachment');
+            $table->string('description')->nullable();
+            $table->string('content');
             $table->unsignedBigInteger('documentable_id');
             $table->string('documentable_type');
+            $table->string('versionNumber');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('Users')->onDelete('cascade');
         });
     }
 

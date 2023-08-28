@@ -28,7 +28,11 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return  view('showDashboard');
     })->name('dashboard')->middleware('auth');
+
+    Route::get('/download-file/{id}', 'Dashboard@downloadFile')->name('download.file');
 });
+
+
 
 Route::get('/macroprocesos', function () {
     return  view('macroprocesses.show');
