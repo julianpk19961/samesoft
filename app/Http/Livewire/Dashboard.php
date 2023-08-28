@@ -16,7 +16,7 @@ class Dashboard extends Component
 {
     use WithFileUploads;
 
-    public $MacroProcesses, $filters, $currentKeyArea, $selectedItem, $showModal = false, $showModalNewDocument = false;
+    public $MacroProcesses, $filters, $currentKeyArea, $selectedItem, $showModal = false, $showModalNewDocument = false, $showModalAttatchment = false;
     public $fileName, $fileDescription, $fileAttachment;
 
     protected $rules = [
@@ -82,12 +82,9 @@ class Dashboard extends Component
     {
 
         $this->validate();
-
         $newFileName = $this->fileName . '.' . $this->fileAttachment->getClientOriginalExtension();
         $attachmentPath = 'public/img/attachments/' . $newFileName;
-
         $this->fileAttachment->storeAs('', $attachmentPath);
-
         $document = new Documents();
         $document->name = $this->fileName;
         $document->description = $this->fileDescription ? $this->fileDescription : null;
@@ -101,9 +98,22 @@ class Dashboard extends Component
 
     public function downloadFile($id)
     {
+
         $document = documents::findOrFail($id);
+        // if ($document->contet) {
         $path = $document->content;
         return Storage::download($path);
+        // }
+        // return response('', 404);
+    }
+
+
+    public function showFile()
+    {
+        // $this->emit('showDA')
+        $this->showModal = false;
+        $this->showModalNewDocument = false;
+        $this->showModalAttatchment = true;
     }
 
     public function render()
