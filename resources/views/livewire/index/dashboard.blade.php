@@ -118,7 +118,8 @@
                                                     <td class="px-6 py-4 whitespace-nowrap text-center">
                                                         <div class="flex space-x-2">
                                                             <button
-                                                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                                                wire:click="showFile({{ $document }})">
                                                                 <i class="fa-solid fa-eye"></i>
 
                                                             </button>
@@ -133,7 +134,8 @@
                                                                 <i class="fa fa-download"></i>
                                                             </button>
                                                             <button
-                                                                class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                                                                class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                                                                wire:click="deleteFile({{ $document['id'] }})">
                                                                 <i class="fa-solid fa-trash"></i>
                                                             </button>
                                                         </div>
@@ -274,6 +276,34 @@
 
         @endif
 
+
+        @if($showModalAttatchment)
+        <x-confirmation-modal wire:model="showModalAttatchment"
+            class="bg-slate-100 text-xl font-semibold text-gray-700">
+            <x-slot name="title" class="">
+                <!-- Tu modal HTML aquí -->
+                <h3>
+                    {{ __('VER DOCUMENTO') }}
+                </h3>
+
+            </x-slot>
+
+            <x-slot name="content">
+                <div
+                    class="px-4 bg-gray-400 sm:p-6 shadow {{ !isset($create) ? 'sm:rounded-tl-md sm:rounded-tr-md' : 'sm:rounded-tr-md' }}  mx-auto">
+                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                        @livewire('attachment-viewer')
+
+                    </div>
+                </div>
+            </x-slot>
+            <x-slot name="footer">
+                <x-secondary-button wire:click="closeDocumentsModal">
+                    {{ __('Cerrar') }}
+                </x-secondary-button>
+            </x-slot>
+        </x-confirmation-modal>
+        @endif
 
 
     </div>

@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('documents', function (Blueprint $table) {
+            
             $table->id();
             $table->string('name');
             $table->string('description')->nullable();
@@ -20,6 +21,7 @@ return new class extends Migration
             $table->string('documentable_type');
             $table->string('versionNumber');
             $table->unsignedBigInteger('user_id');
+            $table->boolean('active')->default(True);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('Users')->onDelete('cascade');

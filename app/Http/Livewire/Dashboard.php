@@ -73,6 +73,7 @@ class Dashboard extends Component
 
         $this->showModal = !$this->showModal;
         $this->showModalNewDocument = !$this->showModalNewDocument;
+        $this->showModalAttatchment = !$this->showModalAttatchment;
 
         // if (isset($this->selectedItem)) {
         // }elseif
@@ -90,16 +91,15 @@ class Dashboard extends Component
         $document->description = $this->fileDescription ? $this->fileDescription : null;
         $document->content = $attachmentPath;
         $document->versionNumber = $this->selectedItem->documents()->count() + 1;
-        $document->user_id = auth()->user()->id;
 
         $this->selectedItem->documents()->save($document);
         $this->toggleAddNewDocument();
     }
 
-    public function downloadFile($id)
+    public function downloadFile(documents $document)
     {
 
-        $document = documents::findOrFail($id);
+        // $document = documents::findOrFail($id);
         // if ($document->contet) {
         $path = $document->content;
         return Storage::download($path);
@@ -108,12 +108,21 @@ class Dashboard extends Component
     }
 
 
-    public function showFile()
+    public function showFile($record)
     {
         // $this->emit('showDA')
+        // dd($id);
+        $this->emit('showAttachment', $record);
         $this->showModal = false;
         $this->showModalNewDocument = false;
         $this->showModalAttatchment = true;
+    }
+
+
+    public function deleteFile(documents $document)
+    {
+        // dd($document);
+        $document->delete();
     }
 
     public function render()
