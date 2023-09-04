@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\MacroProcessesController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Livewire\Dashboard;
 use Livewire\Redirector;
 
 /*
@@ -41,3 +42,9 @@ Route::get('/macroprocesos', function () {
 Route::get('/areas', function () {
     return view('areas.show');
 })->name('areas')->middleware('auth');
+
+
+
+Route::get('/attachment-show/{id}', function () {
+    return view('attachments');
+})->name('attachment-show');

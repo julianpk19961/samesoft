@@ -84,8 +84,17 @@ class Dashboard extends Component
 
         $this->validate();
         $newFileName = $this->fileName . '.' . $this->fileAttachment->getClientOriginalExtension();
-        $attachmentPath = 'public/img/attachments/' . $newFileName;
-        $this->fileAttachment->storeAs('', $attachmentPath);
+        $attachmentPath = $this->fileAttachment->storeAs('img/attachments', $newFileName);
+
+
+        // $attachmentPath = 'public/img/attachments/' . $newFileName;
+        // $this->fileAttachment->storeAs('', $attachmentPath);
+
+        // $this->fileAttachment->move('assets', $newFileName);
+        // $this->fileAttachment->move(storage_path('app/assets'), $newFileName);
+
+        // $attachmentPath = storage_path('app/assets/' . $newFileName);
+
         $document = new Documents();
         $document->name = $this->fileName;
         $document->description = $this->fileDescription ? $this->fileDescription : null;
@@ -123,6 +132,11 @@ class Dashboard extends Component
     {
         // dd($document);
         $document->delete();
+    }
+
+    public function mount()
+    {
+        $this->MacroProcesses = $this->getMacroProcessesProperty();
     }
 
     public function render()

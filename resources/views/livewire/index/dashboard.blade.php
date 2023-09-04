@@ -4,7 +4,7 @@
             <div class="grid grid-cols-2 min-h-screen bg-gradient-to-r from-cyan-500 to-blue-500 rounded m-5 p-2')]">
 
                 <div class="grid-col justify-center space-y-1 my-auto p-1">
-                    @foreach ($this->macroProcesses as $macroProcess)
+                    @foreach ($MacroProcesses as $macroProcess)
                     <div class="p-6 max-w-sm mx-auto bg-white rounded-xl shadow-lg text-center"
                         id="macroProcessInformation-{{ $macroProcess->name }}">
                         <p class="text-slate-500">{{ $macroProcess->name }}</p>
@@ -61,8 +61,7 @@
         </div>
     </div>
 
-
-    <div class="flex justify-end px-4 py-3 bg-gray-100 text-right sm:px-6 shadow sm:rounded-bl-md sm:rounded-br-md">
+    <div>
         @if($showModal)
 
         <x-confirmation-modal wire:model="showModal" class="bg-slate-100 text-xl font-semibold text-gray-700">
@@ -117,12 +116,12 @@
                                                     </td>
                                                     <td class="px-6 py-4 whitespace-nowrap text-center">
                                                         <div class="flex space-x-2">
-                                                            <button
-                                                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                                                                wire:click="showFile({{ $document }})">
+                                                            <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                                                href="{{ route('attachment-show',['id'=>$document['id']]) }}"
+                                                                title="{{ $document['name'] }}">
                                                                 <i class="fa-solid fa-eye"></i>
+                                                            </a>
 
-                                                            </button>
                                                             <button
                                                                 class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
                                                                 <i class="fa fa-upload"></i>
@@ -277,7 +276,7 @@
         @endif
 
 
-        @if($showModalAttatchment)
+        {{-- @if($showModalAttatchment)
         <x-confirmation-modal wire:model="showModalAttatchment"
             class="bg-slate-100 text-xl font-semibold text-gray-700">
             <x-slot name="title" class="">
@@ -293,7 +292,6 @@
                     class="px-4 bg-gray-400 sm:p-6 shadow {{ !isset($create) ? 'sm:rounded-tl-md sm:rounded-tr-md' : 'sm:rounded-tr-md' }}  mx-auto">
                     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                         @livewire('attachment-viewer')
-
                     </div>
                 </div>
             </x-slot>
@@ -303,10 +301,9 @@
                 </x-secondary-button>
             </x-slot>
         </x-confirmation-modal>
-        @endif
+        @endif --}}
 
 
     </div>
-
 
 </div>
