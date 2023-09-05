@@ -13,6 +13,17 @@ return [
     |
     */
 
+    /*
+    |--------------------------------------------------------------------------
+    | Disco de Sistema de Archivos Predeterminado
+    |--------------------------------------------------------------------------
+    |
+    | Aquí puedes especificar el disco de sistema de archivos predeterminado que debe utilizarse
+    | por el marco de trabajo. El disco "local", así como una variedad de discos basados en la nube,
+    | están disponibles para tu aplicación. ¡Solo almacena lo que necesites!
+    |
+    */
+
     'default' => env('FILESYSTEM_DISK', 'local'),
 
     /*
@@ -28,6 +39,19 @@ return [
     |
     */
 
+    /*
+    |--------------------------------------------------------------------------
+    | Discos de Sistema de Archivos
+    |--------------------------------------------------------------------------
+    |
+    | Aquí puedes configurar tantos "discos" de sistema de archivos como desees, e incluso
+    | puedes configurar múltiples discos del mismo controlador. Se han establecido valores predeterminados
+    | para cada controlador como ejemplo de los valores requeridos.
+    |
+    | Controladores admitidos: "local", "ftp", "sftp", "s3"
+    |
+    */
+
     'disks' => [
 
         'local' => [
@@ -39,7 +63,7 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
+            'url' => env('APP_URL') . '/storage',
             'visibility' => 'public',
             'throw' => false,
         ],
@@ -66,6 +90,17 @@ return [
     | Here you may configure the symbolic links that will be created when the
     | `storage:link` Artisan command is executed. The array keys should be
     | the locations of the links and the values should be their targets.
+    |
+    */
+
+    /*
+    |--------------------------------------------------------------------------
+    | Enlaces Simbólicos
+    |--------------------------------------------------------------------------
+    |
+    | Aquí puedes configurar los enlaces simbólicos que se crearán cuando se ejecute el
+    | comando Artisan storage:link. Las claves del array deben ser
+    | las ubicaciones de los enlaces y los valores deben ser sus destinos.
     |
     */
 

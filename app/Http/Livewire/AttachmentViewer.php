@@ -3,25 +3,37 @@
 namespace App\Http\Livewire;
 
 use App\Models\documents;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+
 use Livewire\Component;
 
 class AttachmentViewer extends Component
 {
 
-    public $attachmentId;
+    public $attachmentName;
+    public $attachment;
     public $fileUrl;
+    public $disk = 'public';
+    public $files, $path;
 
-    public function mount(documents $attachmentId)
+    // Documents $attachmentId
+    public function mount(documents $document)
     {
-        $this->attachmentId = $attachmentId;
-        $this->fileUrl = $this->attachmentId->content;
+        $this->attachment = asset($document->content);
+        // $this->attachmentName =  Storage::disk($this->disk)->getClientOriginalName($this->attachment);
 
-        // $this->fileUrl = Storage::url($this->attachmentId->content);
+        // $this->attachmentName = $document->getOriginalClientName();
+        // dd($attachment);
 
-        // if (!Storage::exists($this->attachmentId->content)) {
-        //     return 'El archivo adjunto no existe.';
+        // $this->files = [];
+
+        // foreach (Storage::disk($this->disk)->files('img/attachments') as $file) {
+        //     $name = str_replace("$this->disk/", "", $file);
+        //     $path = asset(Storage::url($name));
+        //     $this->files[] = [
+        //         "name" => $name,
+        //         "path" => $path
+        //     ];
         // }
     }
 

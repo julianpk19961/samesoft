@@ -8,21 +8,15 @@ use Livewire\WithFileUploads;
 use App\Models\areas;
 use App\Models\macro_processes;
 use App\Models\documents;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use League\CommonMark\Node\Block\Document;
+use Illuminate\Support\Facades\Request;
 
 class Dashboard extends Component
 {
     use WithFileUploads;
 
     public $MacroProcesses, $filters, $currentKeyArea, $selectedItem, $showModal = false, $showModalNewDocument = false, $showModalAttatchment = false;
-    public $fileName, $fileDescription, $fileAttachment;
 
-    protected $rules = [
-        'fileName' => ['required', 'min:5'],
-        'fileAttachment' => ['required', 'file', 'max:5120'],
-    ];
 
 
     protected $messages = ['file attachment' => 'Adjunto'];
@@ -41,7 +35,6 @@ class Dashboard extends Component
     // areas $area
     public function showDocumentsAreas(areas $area)
     {
-
         $this->selectedItem = $area;
         $this->showModal = !$this->showModal;
     }
@@ -56,17 +49,7 @@ class Dashboard extends Component
         // }elseif
     }
 
-    public function clear()
-    {
 
-        $this->fileName = '';
-        $this->fileDescription = '';
-        $this->fileAttachment = '';
-
-
-        // if (isset($this->selectedItem)) {
-        // }elseif
-    }
 
     public function toggleAddNewDocument()
     {
@@ -74,36 +57,8 @@ class Dashboard extends Component
         $this->showModal = !$this->showModal;
         $this->showModalNewDocument = !$this->showModalNewDocument;
         $this->showModalAttatchment = !$this->showModalAttatchment;
-
-        // if (isset($this->selectedItem)) {
-        // }elseif
     }
 
-    public function upploadFile()
-    {
-
-        $this->validate();
-        $newFileName = $this->fileName . '.' . $this->fileAttachment->getClientOriginalExtension();
-        $attachmentPath = $this->fileAttachment->storeAs('img/attachments', $newFileName);
-
-
-        // $attachmentPath = 'public/img/attachments/' . $newFileName;
-        // $this->fileAttachment->storeAs('', $attachmentPath);
-
-        // $this->fileAttachment->move('assets', $newFileName);
-        // $this->fileAttachment->move(storage_path('app/assets'), $newFileName);
-
-        // $attachmentPath = storage_path('app/assets/' . $newFileName);
-
-        $document = new Documents();
-        $document->name = $this->fileName;
-        $document->description = $this->fileDescription ? $this->fileDescription : null;
-        $document->content = $attachmentPath;
-        $document->versionNumber = $this->selectedItem->documents()->count() + 1;
-
-        $this->selectedItem->documents()->save($document);
-        $this->toggleAddNewDocument();
-    }
 
     public function downloadFile(documents $document)
     {
