@@ -3,8 +3,10 @@
 namespace App\Http\Livewire;
 
 use App\Models\documents;
+use League\CommonMark\Node\Block\Document;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Illuminate\Support\Str;
 
 class AttachmentFormCreate extends Component
 {
@@ -16,7 +18,7 @@ class AttachmentFormCreate extends Component
     ];
 
     public $file, $fileName, $fileDescription, $fileAttachment;
-    public $disk = 'public';
+    public $disk = 'documents';
     public $selectedItem;
 
     public function stored()
@@ -25,19 +27,20 @@ class AttachmentFormCreate extends Component
         $this->validate();
 
         $file = $this->fileAttachment;
-        $fileAttachment = file_get_contents($file->getRealPath());
-        $filename = $file->getClientOriginalName();
-        $fileZise = $file->getSize();
-        $newFileName = $this->fileName . '.' . $file->getClientOriginalExtension();
-
+        $newFileName = Str::slug($this->fileName) . '.' . $file->getClientOriginalExtension();
+        $currentVersion = Documents::where('name', '=', $newFileName)->count();
+        // $path = $file->storeAs($this->disk, $newFileName);
 
         $document = new Documents();
         $document->name = $this->fileName;
         $document->description = $this->fileDescription ? $this->fileDescription : null;
-        $document->content = $file->storeAs('', $newFileName, $this->disk);
-        $document->versionNumber = $this->id + 1;
-
+        $document->content = $file->storeAs($this->disk, $newFileName);
+        $document->versionNumber = $currentVersion + 1;
         $this->selectedItem->documents()->save($document);
+
+        // $document->save();
+        // dd($document);
+
         // $this->toggleAddNewDocument();
     }
 

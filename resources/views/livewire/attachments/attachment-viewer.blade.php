@@ -1,7 +1,11 @@
 <div>
     TEST
-    {{-- @dump($attachment) --}}
-    {{ asset('storage/app/public/pruebaEnvio.pdf') }}
+    {{-- @dump($fileUrl) --}}
+    {{-- {{ asset( $attachment ) }} --}}
+
+
+    <iframe src="{{ $fileUrl }}" width="100%" height="1000px"></iframe>
+
     {{-- @foreach ($files as $file)
     Name: {{ $file["name"] }}
     <br>

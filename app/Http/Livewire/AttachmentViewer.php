@@ -13,13 +13,17 @@ class AttachmentViewer extends Component
     public $attachmentName;
     public $attachment;
     public $fileUrl;
-    public $disk = 'public';
+    public $disk = 'documents';
     public $files, $path;
 
     // Documents $attachmentId
     public function mount(documents $document)
     {
-        $this->attachment = asset($document->content);
+        $filePath = Storage::disk($this->disk);
+        // $filePath = Storage::url($document->content);
+        $this->fileUrl = $filePath;
+
+        $this->attachment = $filePath;
         // $this->attachmentName =  Storage::disk($this->disk)->getClientOriginalName($this->attachment);
 
         // $this->attachmentName = $document->getOriginalClientName();
