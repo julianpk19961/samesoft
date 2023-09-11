@@ -13,7 +13,7 @@ class AttachmentViewer extends Component
 
     public $attachmentName;
     public $attachment;
-    public $file, $fileUrl, $filePath, $fileExtension, $fileName, $fileFullName;
+    public $file, $fileUrl, $filePath, $fileExtension, $fileName, $fileFullName, $fileExist;
     public $disk = 'documents';
     public $files, $path;
 
@@ -24,6 +24,9 @@ class AttachmentViewer extends Component
         $this->fileName = pathinfo($document->content, PATHINFO_FILENAME);
         $this->fileExtension = pathinfo($document->content, PATHINFO_EXTENSION);
         $this->fileFullName  = $this->fileName . '.' . $this->fileExtension;
+        $this->fileUrl = Storage::disk($this->disk)->url('documents/test-de-envio.pdf');
+        $this->fileExist = Storage::exists($this->disk . "/" . $this->fileFullName);
+
         $this->file = Storage::disk($this->disk)->get($this->fileFullName);
         // $this->fileUrl = $this->file->url();
 

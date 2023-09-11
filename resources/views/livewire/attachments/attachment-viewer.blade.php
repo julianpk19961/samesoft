@@ -1,16 +1,25 @@
 <div>
     <br>
-    Ruta almacenada: {{ $filePath}}
+    Storage path: {{ $filePath}}
     <br>
-    Nombre Archivo: {{ $fileName}}
+    filename: {{ $fileName}}
     <br>
-    Extensión: {{ $fileExtension}}
+    fileExtension: {{ $fileExtension}}
     <br>
-    Nombre Completo Archivo: {{ $fileFullName}}
+    fileFullName: {{ $fileFullName}}
     <br>
-    URL Archivo: {{ $file}}
+    fileUrl: {{ $fileUrl}}
+    <br>
+    fileExist: {{ $fileExist}}
+    <iframe src="{{ $fileUrl }}" width="100%" height="500px"></iframe>
+    {{-- <iframe src="http://127.0.0.1:8000/storage/documents/test-de-envio.pdf" width="100%" height="500px"></iframe>
+    --}}
 
-    <iframe src="{{ $fileUrl }}" width="100%" height="500px"></iframe>';
+    {{-- <iframe src="{{ asset($fileUrl) }}" width="100%" height="500px"></iframe>'; --}}
+
+    {{-- <iframe src="{{ Storage::url('documents/test-de-envio.pdf') }}" width="100%" height="500px"></iframe>
+
+    <iframe src="{{ asset($fileUrl) }}" width="100%" height="500px"></iframe>'; --}}
 
     {{-- @foreach ($files as $file)
     Name: {{ $file["name"] }}
