@@ -1,10 +1,16 @@
 <div>
-    TEST
-    {{-- @dump($fileUrl) --}}
-    {{-- {{ asset( $attachment ) }} --}}
+    <br>
+    Ruta almacenada: {{ $filePath}}
+    <br>
+    Nombre Archivo: {{ $fileName}}
+    <br>
+    Extensión: {{ $fileExtension}}
+    <br>
+    Nombre Completo Archivo: {{ $fileFullName}}
+    <br>
+    URL Archivo: {{ $file}}
 
-
-    <iframe src="{{ $fileUrl }}" width="100%" height="1000px"></iframe>
+    <iframe src="{{ $fileUrl }}" width="100%" height="500px"></iframe>';
 
     {{-- @foreach ($files as $file)
     Name: {{ $file["name"] }}

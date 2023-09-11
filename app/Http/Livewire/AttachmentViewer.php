@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\documents;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
 use Livewire\Component;
@@ -12,33 +13,29 @@ class AttachmentViewer extends Component
 
     public $attachmentName;
     public $attachment;
-    public $fileUrl;
+    public $file, $fileUrl, $filePath, $fileExtension, $fileName, $fileFullName;
     public $disk = 'documents';
     public $files, $path;
 
     // Documents $attachmentId
     public function mount(documents $document)
     {
-        $filePath = Storage::disk($this->disk);
-        // $filePath = Storage::url($document->content);
-        $this->fileUrl = $filePath;
+        $this->filePath = $document->content;
+        $this->fileName = pathinfo($document->content, PATHINFO_FILENAME);
+        $this->fileExtension = pathinfo($document->content, PATHINFO_EXTENSION);
+        $this->fileFullName  = $this->fileName . '.' . $this->fileExtension;
+        $this->file = Storage::disk($this->disk)->get($this->fileFullName);
+        // $this->fileUrl = $this->file->url();
 
-        $this->attachment = $filePath;
-        // $this->attachmentName =  Storage::disk($this->disk)->getClientOriginalName($this->attachment);
 
-        // $this->attachmentName = $document->getOriginalClientName();
-        // dd($attachment);
+        // $this->file = Storage::disk($this->disk)->url($this->fileFullName);
+        // Obtener el archivo del disco
 
-        // $this->files = [];
+        // $archivo = Storage::disk('documents')->get($rutaArchivo);
 
-        // foreach (Storage::disk($this->disk)->files('img/attachments') as $file) {
-        //     $name = str_replace("$this->disk/", "", $file);
-        //     $path = asset(Storage::url($name));
-        //     $this->files[] = [
-        //         "name" => $name,
-        //         "path" => $path
-        //     ];
-        // }
+        // $this->attachmentName = Str::slug($document->name) . $document->content->getClientOriginalExtension();
+
+        $this->attachment = $this->fileUrl;
     }
 
     public function downloadFile()
