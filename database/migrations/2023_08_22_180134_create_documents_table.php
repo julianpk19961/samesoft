@@ -12,11 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('documents', function (Blueprint $table) {
-            
+
             $table->id();
             $table->string('name');
             $table->string('description')->nullable();
-            $table->string('content');
+            $table->string('content')->nullable();
+            $table->string('document_url')->nullable();
             $table->unsignedBigInteger('documentable_id');
             $table->string('documentable_type');
             $table->string('versionNumber');

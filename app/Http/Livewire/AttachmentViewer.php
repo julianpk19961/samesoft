@@ -16,34 +16,17 @@ class AttachmentViewer extends Component
     public $file, $fileUrl, $filePath, $fileExtension, $fileName, $fileFullName, $fileExist;
     public $disk = 'documents';
     public $files, $path;
+    public $document;
 
     // Documents $attachmentId
     public function mount(documents $document)
     {
-        $this->filePath = $document->content;
-        $this->fileName = pathinfo($document->content, PATHINFO_FILENAME);
-        $this->fileExtension = pathinfo($document->content, PATHINFO_EXTENSION);
-        $this->fileFullName  = $this->fileName . '.' . $this->fileExtension;
-        $this->fileUrl = Storage::disk($this->disk)->url('documents/test-de-envio.pdf');
-        $this->fileExist = Storage::exists($this->disk . "/" . $this->fileFullName);
-
-        $this->file = Storage::disk($this->disk)->get($this->fileFullName);
-        // $this->fileUrl = $this->file->url();
-
-
-        // $this->file = Storage::disk($this->disk)->url($this->fileFullName);
-        // Obtener el archivo del disco
-
-        // $archivo = Storage::disk('documents')->get($rutaArchivo);
-
-        // $this->attachmentName = Str::slug($document->name) . $document->content->getClientOriginalExtension();
-
-        $this->attachment = $this->fileUrl;
+        $this->document = $document;
     }
 
     public function downloadFile()
     {
-        return Storage::download($this->attachmentId->content);
+        return Storage::download($this->document->content);
     }
 
     public function render()

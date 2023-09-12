@@ -36,7 +36,7 @@ class documentObserver
         $logEngry->sysDescription = 'Se crea nuevo documento bajo el nombre de: ' . $documents->fileName . ' en la ruta: ' . $documents->content;
         $logEngry->changes = $documents->toJson();
         $logEngry->ip_address = $ipAdrress;
-        $logEngry->attachment = $documents->content;
+        $logEngry->attachment = $documents->content ? $documents->content : $documents->document_url;
         $logEngry->save();
     }
 

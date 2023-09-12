@@ -14,10 +14,10 @@ class AttachmentFormCreate extends Component
 
     protected $rules = [
         'fileName' => ['required', 'min:5'],
-        'fileAttachment' => ['required', 'file', 'max:5120'],
+        'fileAttachment.*' => ['required', 'file', 'max:5120'],
     ];
 
-    public $file, $fileName, $fileDescription, $fileAttachment;
+    public $file, $fileName, $fileDescription, $fileAttachment, $fileLinkStored;
     public $disk = 'documents';
     public $selectedItem;
 
@@ -25,30 +25,29 @@ class AttachmentFormCreate extends Component
     {
 
         $this->validate();
+        $filename = trim($this->fileName);
 
-        $file = $this->fileAttachment;
-        $newFileName = Str::slug($this->fileName) . '.' . $file->getClientOriginalExtension();
-        $currentVersion = Documents::where('name', '=', $newFileName)->count();
-        // $path = $file->storeAs($this->disk, $newFileName);
+        if ($this->fileAttachment) {
+            $file = $this->fileAttachment;
+            $newFileName = Str::slug($filename) . '.' . $file->getClientOriginalExtension();
+            $currentVersion = Documents::where('name', '=', $newFileName)->count();
+        } else {
+            $currentVersion = Documents::where('name', '=', $filename)->count();
+        }
 
         $document = new Documents();
-        $document->name = $this->fileName;
-        $document->description = $this->fileDescription ? $this->fileDescription : null;
-        $document->content = $file->storeAs($this->disk, $newFileName);
+        $document->name = $filename;
+        $document->document_url = $this->fileLinkStored;
+        $document->description = $this->fileDescription;
+        $document->content = $this->fileAttachment ? $file->storeAs('documents', $newFileName) : null;
         $document->versionNumber = $currentVersion + 1;
         $this->selectedItem->documents()->save($document);
-
-        // $document->save();
-        // dd($document);
-
-        // $this->toggleAddNewDocument();
+        $this->clear();
     }
 
     public function clear()
     {
-        $this->fileName = '';
-        $this->fileDescription = '';
-        $this->fileAttachment = '';
+        $this->reset();
     }
 
     public function mount($selectedItem)

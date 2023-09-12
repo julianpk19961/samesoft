@@ -24,7 +24,7 @@ return [
     |
     */
 
-    'default' => env('FILESYSTEM_DISK', 'documents'),
+    'default' => env('FILESYSTEM_DISK', 'public'),
 
     /*
     |--------------------------------------------------------------------------
@@ -59,14 +59,6 @@ return [
             'root' => storage_path('app'),
             'throw' => false,
         ],
-
-        'documents' => [
-            'driver' => 'local',
-            'root' => storage_path('app/documents'),
-            'url' => env('APP_URL') . 'storage/documents',
-            'visibility' => 'public',
-        ],
-
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

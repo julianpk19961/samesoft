@@ -1,56 +1,70 @@
-<div>
-    <br>
-    Storage path: {{ $filePath}}
-    <br>
-    filename: {{ $fileName}}
-    <br>
-    fileExtension: {{ $fileExtension}}
-    <br>
-    fileFullName: {{ $fileFullName}}
-    <br>
-    fileUrl: {{ $fileUrl}}
-    <br>
-    fileExist: {{ $fileExist}}
-    <iframe src="{{ $fileUrl }}" width="100%" height="500px"></iframe>
-    {{-- <iframe src="http://127.0.0.1:8000/storage/documents/test-de-envio.pdf" width="100%" height="500px"></iframe>
-    --}}
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
-    {{-- <iframe src="{{ asset($fileUrl) }}" width="100%" height="500px"></iframe>'; --}}
+<head>
+    {{--
+    <meta charset="utf-8"> --}}
+    <meta charset="UTF-8">
 
-    {{-- <iframe src="{{ Storage::url('documents/test-de-envio.pdf') }}" width="100%" height="500px"></iframe>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <iframe src="{{ asset($fileUrl) }}" width="100%" height="500px"></iframe>'; --}}
+    <title>{{ config('app.name', 'SAME') }}</title>
 
-    {{-- @foreach ($files as $file)
-    Name: {{ $file["name"] }}
-    <br>
-    Path: {{ $file["path"] }}
-    <br>
-    <br> --}}
+    <!-- Fonts -->
+    {{--
+    <link rel="preconnect" href="https://fonts.bunny.net"> --}}
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ URL::asset('img/favicon_32.png') }}">
+    {{--
+    <link rel="stylesheet" href="{{ asset('css/all.min.css') }}">
+    <script defer src="{{ asset('js/all.min.js') }}"></script> --}}
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/abd130ae28.js" crossorigin="anonymous"></script>
 
-    {{-- @endforeach --}}
+    <!-- Scripts -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <!-- Styles -->
+    @livewireStyles
+
+</head>
+
+<body class="font-sans antialiased">
+    <x-banner />
+
+    <div class="min-h-screen bg-gray-100">
+        @livewire('navigation-menu')
+
+        <!-- Page Heading -->
+        @isset($header)
+        <header class="bg-gray-500 shadow border-t-2">
+            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 text-white">
+                {{ $header }}
+            </div>
+        </header>
+        @endisset
+
+        <!-- Page Content -->
+        <div width="100%" height="100%">
+            <h2 class="text-center py-12">{{ $document->name }}</h2>
+
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="p-6 bg-white border-b border-gray-200">
 
 
+                        <iframe src="{{ $document->document_url ? $document->document_url : $document->content}}"
+                            width="100%" height="100%"
+                            sandbox="allow-scripts allow-same-origin allow-forms allow-top-navigation allow-modals allow-popups allow-pointer-lock allow-geolocation allow-clipboard-read allow-clipboard-write allow-insecure-requests allow-downloads">
 
-    {{-- attachment: {{ url('storage/img/attachments/PRUEBA420_4sep23.pdf') }} --}}
-    {{-- <br> --}}
-    {{-- attachmentId: {{ $attachmentId->content }} --}}
-    {{-- <br>
-    fileUrl: {{ $fileUrl }}
-    <br>
-    attachment : {{ Storage::disk('public')->exists($fileUrl) }}
-    <br>
-    <iframe src="http://127.0.0.1:8000/img/attachments/PRUEBA420_4sep23.pdf" width="100%" height="500"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <x-section-border />
+        @stack('modals')
 
-    <iframe src="data:application/pdf;base64,{{ base64_encode($attachment) }}" width="100%" height="500"></iframe>
+        @livewireScripts
+</body>
 
-
-
-    {{-- <iframe src="{{ $fileUrl }}" width="100%" height="500"></iframe> --}}
-
-    {{--<button class="bg-orange-500 py-2 px-4 rounded" wire:click="downloadFile()">
-        Descargar Archivo
-    </button> --}}
-</div>
+</html>
