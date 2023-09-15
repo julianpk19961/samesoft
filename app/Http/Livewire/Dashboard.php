@@ -74,9 +74,6 @@ class Dashboard extends Component
 
     public function showFile($record)
     {
-        // $this->emit('showDA')
-        // dd($id);
-        // $this->emit('showAttachment', $record);
         $this->showModal = false;
         $this->showModalNewDocument = false;
         $this->showModalAttatchment = true;

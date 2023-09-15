@@ -8,6 +8,8 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Str;
 
+use function PHPUnit\Framework\once;
+
 class AttachmentFormCreate extends Component
 {
     use WithFileUploads;
@@ -52,6 +54,7 @@ class AttachmentFormCreate extends Component
 
     public function mount($selectedItem)
     {
+        @once();
         $this->selectedItem = $selectedItem;
     }
 

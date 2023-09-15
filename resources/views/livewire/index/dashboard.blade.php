@@ -194,7 +194,7 @@
 
         @endif
 
-        @if($showModalNewDocument)
+        {{-- @if($showModalNewDocument)
 
         <x-confirmation-modal wire:model="showModalNewDocument"
             class="bg-slate-100 text-xl font-semibold text-gray-700">
@@ -217,7 +217,7 @@
             </x-slot>
         </x-confirmation-modal>
 
-        @endif
+        @endif --}}
 
 
         {{-- @if($showModalAttatchment)
