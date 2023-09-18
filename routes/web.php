@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\MacroProcessesController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Dashboard;
+use Illuminate\Auth\Events\Verified;
 use Livewire\Redirector;
 
 /*
@@ -16,9 +18,9 @@ use Livewire\Redirector;
 |
 */
 
-Route::get('/', function () {
-    return view('auth.login');
-});
+// Route::get('/', function () {
+//     return view('auth.login');
+// });
 
 Route::middleware([
     'auth:sanctum',
@@ -26,13 +28,12 @@ Route::middleware([
     'verified'
 ])->group(function () {
 
-    Route::get('/dashboard', function () {
+    Route::get('/', function () {
         return  view('showDashboard');
     })->name('dashboard')->middleware('auth');
 
     Route::get('/download-file/{id}', 'Dashboard@downloadFile')->name('download.file');
 });
-
 
 
 Route::get('/macroprocesos', function () {
@@ -42,7 +43,6 @@ Route::get('/macroprocesos', function () {
 Route::get('/areas', function () {
     return view('areas.show');
 })->name('areas')->middleware('auth');
-
 
 
 Route::get('/attachment-show/{id}', function () {
