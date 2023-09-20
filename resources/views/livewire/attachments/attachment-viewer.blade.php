@@ -49,7 +49,7 @@
                     <div class="p-6 bg-white border-b border-gray-200">
 
 
-                        <iframe src="{{ $document->document_url ? $document->document_url : $document->content}}"
+                        <iframe src="{{ $document->document_url ? $document->document_url : asset($document->content)}}"
                             width="100%" height="100%"
                             sandbox="allow-scripts allow-same-origin allow-forms allow-top-navigation allow-modals allow-popups allow-pointer-lock allow-geolocation allow-clipboard-read allow-clipboard-write allow-insecure-requests allow-downloads">
 

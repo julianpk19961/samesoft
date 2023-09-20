@@ -72,10 +72,13 @@ class documentObserver
     {
 
         $ipAdrress = Request::ip();
-        $origenPath = $documents->content;
-        $trashedPath = 'public/trashed/' . basename($origenPath);
 
-        Storage::move($origenPath, $trashedPath);
+        if ($documents->content) {
+            $origenPath = $documents->content;
+            $trashedPath = 'public/trashed/' . basename($origenPath);
+            Storage::move($origenPath, $trashedPath);
+        }
+
 
         $logEngry = new logEntry();
         $logEngry->user_id = auth()->user()->id;
@@ -86,7 +89,7 @@ class documentObserver
         $logEngry->sysDescription = 'Se Eliminará el documento : ' . $documents->fileName . 'su adjunto quedará reubicado en la ruta: ' . $documents->content;
         $logEngry->changes = $documents->toJson();
         $logEngry->ip_address = $ipAdrress;
-        $logEngry->attachment = $trashedPath;
+        $logEngry->attachment = $documents->content ? $trashedPath : $documents->document_url;
         $logEngry->save();
     }
 

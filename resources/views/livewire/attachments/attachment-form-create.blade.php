@@ -1,7 +1,6 @@
 <div>
     <div
         class="px-4 bg-gray-400 sm:p-6 shadow {{ !isset($create) ? 'sm:rounded-tl-md sm:rounded-tr-md' : 'sm:rounded-tr-md' }} mx-auto">
-        <p>{{ request()->route()->getName() }}</p>
 
         <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
             <form wire:submit.prevent="stored" class="w-full py-5" enctype="multipart/form-data">

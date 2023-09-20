@@ -65,36 +65,30 @@
         @if($showModal)
 
         <x-confirmation-modal wire:model="showModal" class="bg-slate-100 text-xl font-semibold text-gray-700">
-            <x-slot name="title" class="">
-                <!-- Tu modal HTML aquí -->
-                <h3>
-                    {{ Str::upper($selectedItem->name) }}
-                    <button class="rounded-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 "
-                        wire:click="toggleAddNewDocument">
-                        <i class="fa fa-plus" title="Agregar archivo"></i>
-                    </button>
-                </h3>
+            <x-slot name="title" class="flex items-center">
+                {{ Str::upper($selectedItem->name) }}
+                <button
+                    class="rounded-md text-sm bg-green-500 hover:bg-green-700 text-white font-semibold py-2 px-4 flex-shrink: 1"
+                    wire:click="toggleAddNewDocument">
+                    Nuevo Documento
+                </button>
 
             </x-slot>
 
             <x-slot name="content">
                 <div
-                    class="px-4 bg-gray-400 sm:p-6 shadow {{ !isset($create) ? 'sm:rounded-tl-md sm:rounded-tr-md' : 'sm:rounded-tr-md' }}  mx-auto">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                    class="px-4 bg-gray-400 sm:p-6 shadow text-sm {{ !isset($create) ? 'sm:rounded-tl-md sm:rounded-tr-md' : 'sm:rounded-tr-md' }}  mx-auto">
+                    <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
                         <div class="flex flex-col">
                             <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                                 <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
                                     <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                                        <table class="min-w-full divide-y divide-gray-200">
+                                        <table class="min-w-full divide-y divide-gray-200 overflow-x-auto">
                                             <thead class="bg-gray-50">
                                                 <tr>
                                                     <th scope="col"
                                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                                         Nombre
-                                                    </th>
-                                                    <th scope="col"
-                                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                        Archivo
                                                     </th>
                                                     <th scope="col"
                                                         class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider ">
@@ -109,31 +103,26 @@
                                                     <td class="px-6 py-4 whitespace-nowrap">
                                                         {{ Str::upper($document['name']) }}
                                                     </td>
-                                                    <td class="px-6 py-4 whitespace-nowrap text-center"
-                                                        title="type: {{ $document->extension }}">
-                                                        <i
-                                                            class="{{ $document->extension = 'pdf' ? 'fa fa-file-pdf-o' :  'fa fa-file-excel-o'}}"></i>
-                                                    </td>
                                                     <td class="px-6 py-4 whitespace-nowrap text-center">
                                                         <div class="flex space-x-2">
-                                                            <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                                            <a class="bg-blue-500 hover:bg-blue-700 text-white text-sm font-bold py-2 px-4 rounded"
                                                                 href="{{ route('attachment-show',['id'=>$document['id']]) }}"
                                                                 title="{{ $document['name'] }}">
                                                                 <i class="fa-solid fa-eye"></i>
                                                             </a>
 
                                                             <button
-                                                                class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                                                                class="bg-green-500 hover:bg-green-700 text-white text-sm font-bold py-2 px-4 rounded">
                                                                 <i class="fa fa-upload"></i>
 
                                                             </button>
                                                             <button
-                                                                class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded"
+                                                                class="bg-orange-500 hover:bg-orange-700 text-white text-sm font-bold py-2 px-4 rounded"
                                                                 wire:click="downloadFile({{ $document['id'] }})">
                                                                 <i class="fa fa-download"></i>
                                                             </button>
                                                             <button
-                                                                class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                                                                class="bg-red-500 hover:bg-red-700 text-white text-sm font-bold py-2 px-4 rounded"
                                                                 wire:click="deleteFile({{ $document['id'] }})">
                                                                 <i class="fa-solid fa-trash"></i>
                                                             </button>
@@ -149,26 +138,23 @@
                                                             SIN ARCHIVO
                                                         </td>
                                                         <td class="px-6 py-4 whitespace-nowrap text-center">
-                                                            <!-- Coloca aquí el contenido de las celdas de la fila -->
-                                                        </td>
-                                                        <td class="px-6 py-4 whitespace-nowrap text-center">
                                                             <div class="flex space-x-2">
                                                                 <button
-                                                                    class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                                                                    class="bg-gray-500 hover:bg-gray-700 text-white text-sm font-bold py-2 px-4 rounded">
                                                                     <i class="fa-solid fa-eye"></i>
 
                                                                 </button>
                                                                 <button
-                                                                    class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                                                                    class="bg-gray-500 hover:bg-gray-700 text-white text-sm font-bold py-2 px-4 rounded">
                                                                     <i class="fa fa-upload"></i>
 
                                                                 </button>
                                                                 <button
-                                                                    class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                                                                    class="bg-gray-500 hover:bg-gray-700 text-white text-sm font-bold py-2 px-4 rounded">
                                                                     <i class="fa fa-download"></i>
                                                                 </button>
                                                                 <button
-                                                                    class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                                                                    class="bg-gray-500 hover:bg-gray-700 text-white text-sm font-bold py-2 px-4 rounded">
                                                                     <i class="fa-solid fa-trash"></i>
                                                                 </button>
                                                             </div>
@@ -186,7 +172,7 @@
                 </div>
             </x-slot>
             <x-slot name="footer">
-                <x-secondary-button wire:click="closeDocumentsModal">
+                <x-secondary-button wire:click="handleAreasModal()">
                     {{ __('Cerrar') }}
                 </x-secondary-button>
             </x-slot>
@@ -194,30 +180,7 @@
 
         @endif
 
-        {{-- @if($showModalNewDocument)
 
-        <x-confirmation-modal wire:model="showModalNewDocument"
-            class="bg-slate-100 text-xl font-semibold text-gray-700">
-            <x-slot name="title" class="">
-                <!-- Tu modal HTML aquí -->
-                <h3>
-                    {{ __('NUEVO DOCUMENTO') }}
-                </h3>
-
-            </x-slot>
-
-            <x-slot name="content">
-                @livewire('attachment-form-create',["selectedItem" => $selectedItem] )
-            </x-slot>
-
-            <x-slot name="footer">
-                <x-secondary-button wire:click="closeDocumentsModal">
-                    {{ __('Cerrar') }}
-                </x-secondary-button>
-            </x-slot>
-        </x-confirmation-modal>
-
-        @endif --}}
 
 
         {{-- @if($showModalAttatchment)
@@ -248,6 +211,33 @@
         @endif --}}
 
 
+    </div>
+
+    <div>
+        @if($showModalNewDocument)
+
+        <x-confirmation-modal wire:model="showModalNewDocument"
+            class="bg-slate-100 text-xl font-semibold text-gray-700">
+            <x-slot name="title" class="">
+                <!-- Tu modal HTML aquí -->
+                <h3>
+                    {{ __('NUEVO DOCUMENTO') }}
+                </h3>
+
+            </x-slot>
+
+            <x-slot name="content">
+                @livewire('attachment-form-create',["selectedItem" => $selectedItem] )
+            </x-slot>
+
+            <x-slot name="footer">
+                <x-secondary-button wire:click="closeDocumentsModal">
+                    {{ __('Cerrar') }}
+                </x-secondary-button>
+            </x-slot>
+        </x-confirmation-modal>
+
+        @endif
     </div>
 
 </div>

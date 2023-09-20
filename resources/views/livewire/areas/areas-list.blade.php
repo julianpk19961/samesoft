@@ -14,7 +14,7 @@
                 <div class="flex flex-col md:flex-row items-center justify-center w-2/5">
                     <div class="flex flex-col items-center justify-center w-full md:w-1/2">
                         <div class="text-sm font-bold truncate whitespace-normal text-center w-full">
-                            <span class="text-xs md:text-sm">{{ $area->name . ' ' . $area->childs
+                            <span class="text-xs md:text-sm">{{ Str::upper($area->name . ' ' . $area->childs)
                                 }}</span>
                         </div>
                         <div class="flex items-center justify-center gap-2 border-t-1 mt-2">

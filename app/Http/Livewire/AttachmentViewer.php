@@ -14,7 +14,7 @@ class AttachmentViewer extends Component
     public $attachmentName;
     public $attachment;
     public $file, $fileUrl, $filePath, $fileExtension, $fileName, $fileFullName, $fileExist;
-    public $disk = 'documents';
+    // public $disk = 'public';
     public $files, $path;
     public $document;
 

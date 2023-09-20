@@ -18,6 +18,8 @@ class MacroProcessList extends Component
     public $showModal = false;
     public $showAddRecordsModal = false;
     public $macroProcessCheckedList = [];
+    public $activeTabs = [];
+    public $activeTabsContent = [];
 
 
 
@@ -27,15 +29,17 @@ class MacroProcessList extends Component
     {
         $this->showModal = false;
 
+
+        // $this->resetActiveTabs();
+
         $this->tabs = [
-            'Macroprocesos' => 'Contenido de la Pestaña 1',
-            'Areas' => 'Contenido de la Pestaña 2',
-            'Politicas' => 'Contenido de la Pestaña 3',
+            'Macroprocesos' => 'children',
+            'Areas' => 'parents',
+            'Politicas' => 'documents',
         ];
 
-        // $this->activeTab = 'Macroprocesos';
+        $this->activeTab = 'Macroprocesos';
         $this->getMacroProcessesProperty();
-        $this->resetActiveTabs();
     }
 
     public function showMacroProcessDetails(macro_processes $selectedMacroProcess)
@@ -51,9 +55,10 @@ class MacroProcessList extends Component
 
 
 
-    public function resetActiveTabs()
+    public function resetActiveTabs($activeTab)
     {
         $this->activeTab = [];
+
         foreach ($this->macroProcesses as $macroProcess) {
             $this->activeTab[$macroProcess->id] = 'Macroprocesos';
         }
@@ -127,9 +132,20 @@ class MacroProcessList extends Component
     }
 
 
-    public function setActiveTab($macroProcessId, $index)
+    public function setActiveTab($index, $currentMacroprocess)
     {
-        $this->activeTab[$macroProcessId] = $index;
+
+        if (!isset($this->activeTabs[$currentMacroprocess])) {
+            $this->activeTabs[$currentMacroprocess] = [];
+            $this->activeTabsContent[$currentMacroprocess] = [];
+        }
+
+        $macroProcessSeleceted = macro_processes::findOrFail($currentMacroprocess);
+        // Actualiza el estado activo de la pestaña solo para el macroproceso actual.
+
+        $this->activeTabs[$currentMacroprocess] = $index;
+        $this->activeTabsContent[$currentMacroprocess] = $macroProcessSeleceted->{$this->tabs[$index]}();
+        // $this->activetbsContent[$currentMacroprocess] = macro_processes::findOrFail($currentMacroprocess)->name;
     }
 
 

@@ -21,26 +21,34 @@ class Dashboard extends Component
 
     protected $messages = ['file attachment' => 'Adjunto'];
 
+    public function render()
+    {
+        return view('livewire.index.dashboard');
+    }
+
+
     public function getMacroProcessesProperty()
     {
         $query = macro_processes::all();
         return $query;
     }
 
-    public function showDocumentsMacroProcess(macro_processes $macroProcesses)
+    public function showDocumentsMacroProcess()
     {
         $showModal = true;
+        // $this->emit('macroProcessesSelected', $macroProcesses);
     }
 
     // areas $area
     public function showDocumentsAreas(areas $area)
     {
         $this->selectedItem = $area;
-        $this->showModal = !$this->showModal;
+        $this->handleAreasModal();
+        // $this->showModal = !$this->showModal;
     }
 
 
-    public function closeDocumentsModal()
+    public function handleAreasModal()
     {
 
         $this->showModal = !$this->showModal;
@@ -66,6 +74,7 @@ class Dashboard extends Component
         // $document = documents::findOrFail($id);
         // if ($document->contet) {
         $path = $document->content;
+        dd($path);
         return Storage::download($path);
         // }
         // return response('', 404);
@@ -82,17 +91,11 @@ class Dashboard extends Component
 
     public function deleteFile(documents $document)
     {
-        // dd($document);
         $document->delete();
     }
 
     public function mount()
     {
         $this->MacroProcesses = $this->getMacroProcessesProperty();
-    }
-
-    public function render()
-    {
-        return view('livewire.index.dashboard');
     }
 }

@@ -109,7 +109,9 @@
                         </x-slot>
 
                         <x-slot name="content">
-                            {{ __('¿Está seguro de crear el macroproceso?') }}
+                            <div>
+                                {{ __("¿Está seguro de crear el macroproceso: $this->name?") }}
+                            </div>
                         </x-slot>
 
                         <x-slot name="footer">

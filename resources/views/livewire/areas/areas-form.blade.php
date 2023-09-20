@@ -84,7 +84,7 @@
                         </x-slot>
 
                         <x-slot name="content">
-                            {{ __('¿Está seguro de crear el Area?') }}
+                            {{ __("¿Está seguro de crear el Area: $this->name?") }}
                         </x-slot>
 
                         <x-slot name="footer">
