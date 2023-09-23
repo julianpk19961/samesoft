@@ -34,8 +34,9 @@ class MacroProcessList extends Component
 
         $this->tabs = [
             'Macroprocesos' => 'children',
-            'Areas' => 'parents',
-            'Politicas' => 'documents',
+            'Areas' => 'areas',
+            'Politicas' => 'politicas',
+            'Documentos' => 'documentos',
         ];
 
         $this->activeTab = 'Macroprocesos';
@@ -132,20 +133,32 @@ class MacroProcessList extends Component
     }
 
 
-    public function setActiveTab($index, $currentMacroprocess)
+    public function setActiveTab($index, macro_processes $currentMacroprocess)
     {
 
-        if (!isset($this->activeTabs[$currentMacroprocess])) {
-            $this->activeTabs[$currentMacroprocess] = [];
-            $this->activeTabsContent[$currentMacroprocess] = [];
+
+        if (!isset($this->activeTabs[$currentMacroprocess->id])) {
+            $this->activeTabs[$currentMacroprocess->id] = [];
+            $this->activeTabsContent[$currentMacroprocess->id] = [];
         }
 
-        $macroProcessSeleceted = macro_processes::findOrFail($currentMacroprocess);
-        // Actualiza el estado activo de la pestaña solo para el macroproceso actual.
+        $this->activeTabs[$currentMacroprocess->id] = $index;
 
-        $this->activeTabs[$currentMacroprocess] = $index;
-        $this->activeTabsContent[$currentMacroprocess] = $macroProcessSeleceted->{$this->tabs[$index]}();
-        // $this->activetbsContent[$currentMacroprocess] = macro_processes::findOrFail($currentMacroprocess)->name;
+        // Seleccionar el contenido dependiendo de la pestaña clickeada
+        if ($this->activeTabs[$currentMacroprocess->id] == 'Macroprocesos') {
+            $this->activeTabsContent[$currentMacroprocess->id] = $currentMacroprocess->children;
+        } elseif ($index == 'Areas') {
+            $this->activeTabsContent[$currentMacroprocess->id] = $currentMacroprocess->areas;
+        } else {
+            unset($this->activeTabsContent[$currentMacroprocess->id]);
+        }
+
+        //verificar si no encontró registros.
+        if (isset($this->activeTabsContent[$currentMacroprocess->id])) {
+            if ($this->activeTabsContent[$currentMacroprocess->id]->isEmpty() === true || empty($this->activeTabsContent[$currentMacroprocess->id])) {
+                unset($this->activeTabsContent[$currentMacroprocess->id]);
+            }
+        }
     }
 
 
