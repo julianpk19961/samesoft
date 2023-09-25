@@ -74,7 +74,7 @@ class Dashboard extends Component
         // $document = documents::findOrFail($id);
         // if ($document->contet) {
         $path = $document->content;
-        dd($path);
+        // dd($path);
         return Storage::download($path);
         // }
         // return response('', 404);

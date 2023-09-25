@@ -27,6 +27,7 @@ class CreateNewUser implements CreatesNewUsers
     public function create(array $input): User
     {
 
+        // dd($input);
 
         Validator::make($input, [
             'document' => ['required', 'unique:people_data'],
@@ -50,7 +51,6 @@ class CreateNewUser implements CreatesNewUsers
                 $this->createTeam($user);
             });
         });
-        
     }
 
     /**

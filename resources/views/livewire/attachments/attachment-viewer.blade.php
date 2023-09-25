@@ -40,18 +40,23 @@
         </header>
         @endisset
 
+
         <!-- Page Content -->
         <div width="100%" height="100%">
-            <h2 class="text-center py-12">{{ $document->name }}</h2>
+            <p class="text-center ">{{ $document->name }}</p>
+            <p class="text-center ">{{ $document->content }}</p>
+            <p class="text-center ">{{ asset("/storage/".$document->content) }}</p>
+            {{-- <p class="text-center ">{{ Storage::exists($document->content) }}</p> --}}
+
+            `
 
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 bg-white border-b border-gray-200">
 
-
-                        <iframe src="{{ $document->document_url ? $document->document_url : asset($document->content)}}"
-                            width="100%" height="100%"
-                            sandbox="allow-scripts allow-same-origin allow-forms allow-top-navigation allow-modals allow-popups allow-pointer-lock allow-geolocation allow-clipboard-read allow-clipboard-write allow-insecure-requests allow-downloads">
+                        <iframe src="{{ asset('storage/'.$document->content) }}" width="100%" height="100%"
+                            sandbox="allow-scripts allow-same-origin allow-forms allow-top-navigation">
+                        </iframe>
 
                     </div>
                 </div>

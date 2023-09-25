@@ -9,7 +9,7 @@
 
                     <div class="col-span-12 sm:col-span-10">
                         <x-label for="fileName" value="{{ __('Name') }}" />
-                        <x-input id="fileName" type="text" class="mb-2 block w-full" wire:model="fileName"
+                        <x-input id="fileName" type="text" class="mb-2 block w-full" wire:model.debounce.500ms="fileName"
                             autocomplete="fileName" />
                         <x-input-error for="fileName" class="mt-2" />
                     </div>

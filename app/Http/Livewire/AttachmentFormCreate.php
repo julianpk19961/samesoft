@@ -20,7 +20,7 @@ class AttachmentFormCreate extends Component
     ];
 
     public $file, $fileName, $fileDescription, $fileAttachment, $fileLinkStored;
-    public $disk = 'documents';
+    public $disk = 'public';
     public $selectedItem;
 
     public function stored()
@@ -41,7 +41,7 @@ class AttachmentFormCreate extends Component
         $document->name = $filename;
         $document->document_url = $this->fileLinkStored;
         $document->description = $this->fileDescription;
-        $document->content = $this->fileAttachment ? $file->storeAs('documents', $newFileName) : null;
+        $document->content = $this->fileAttachment ? $file->storeAs('documents/' . $newFileName) : null;
         $document->versionNumber = $currentVersion + 1;
         $this->selectedItem->documents()->save($document);
         $this->clear();
