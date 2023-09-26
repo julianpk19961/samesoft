@@ -87,6 +87,6 @@ class MacroProcessForm extends Component
     public function render()
     {
 
-        return view('livewire.macro-process-form');
+        return view('livewire.macroprocess.macro-process-form');
     }
 }

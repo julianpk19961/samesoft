@@ -166,6 +166,6 @@ class MacroProcessList extends Component
     public function render()
     {
 
-        return view('livewire.macro-process-list');
+        return view('livewire.macroprocess.macro-process-list');
     }
 }

@@ -17,7 +17,6 @@ class MacroProcessDelete extends Component
 
     public function mount($performDelete = true)
     {
-        LOG::debug('MONTAR');
         $this->performDelete = $performDelete;
     }
 
@@ -35,20 +34,13 @@ class MacroProcessDelete extends Component
     public function delete(Macro_Processes $macroProcess)
     {
 
-        $childs = $macroProcess->children() ?? [];
-        $parents = $macroProcess->parents() ?? [];
+        $childs = $macroProcess->children ?? [];
+        $parents = $macroProcess->parents ?? [];
+        $documents = $macroProcess->documents ?? [];
+
         $performDelete = $this->performDelete;
 
-        // $data = ([
-        //     'REGISTRO: ' => $macroProcess->id,
-        //     'DEPENDE DE: ' => $parents->count(),
-        //     'DETALLES: ' => $childs->count(),
-        //     'HABILITADO PARA ELIMINAR: ' => $performDelete
-        // ]);
-
-
-
-        if ($performDelete && ($childs->count() > 0 || $parents->count() > 0)) {
+        if ($performDelete && ($childs->count() > 0 || $documents->count() > 0)) {
             $macroProcess->active = !$macroProcess->active;
             $macroProcess->save();
             $this->updateList();
@@ -57,24 +49,10 @@ class MacroProcessDelete extends Component
             return false;
         }
 
-        if ($performDelete) {
+            if ($performDelete) {
             $macroProcess->delete();
             $this->updateList();
         }
-
-        // if (!$performDelete && $parents->count() > 0) {
-        //     // $macroProcess->macroprocess_id = null;
-        //     // $macroProcess->save();
-        //     // $this->updateList();
-        //     return false;
-        // } elseif ($performDelete) {
-        //     $data['ACCION'] = 'ELIMINA';
-        //     // dd('SE ELIMINA');
-        //     $macroProcess->delete();
-        //     $this->updateList();
-        // }
-
-        // LOG::debug($data);
     }
 
     public function disableDelete($macroProcess)
@@ -95,6 +73,6 @@ class MacroProcessDelete extends Component
 
     public function render()
     {
-        return view('livewire.macro-process-delete');
+        return view('livewire.macroprocess.macro-process-delete');
     }
 }

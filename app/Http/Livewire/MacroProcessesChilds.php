@@ -48,7 +48,7 @@ class MacroProcessesChilds extends Component
         // });
 
         return view(
-            'livewire.macro-processes-childs'
+            'livewire.macroprocess.macro-processes-childs'
             // ,
             // [
             //     'items' => $items,

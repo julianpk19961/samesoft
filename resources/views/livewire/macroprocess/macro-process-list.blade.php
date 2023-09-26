@@ -12,8 +12,8 @@
                 wire:key="{{ $macroProcess->id }}">
                 <div class="flex flex-col md:flex-row items-center justify-center w-2/5">
                     <div class="flex flex-col items-center justify-center w-full md:w-1/2">
-                        <div class="w-10 h-10 flex items-center justify-center">
 
+                        <div class="w-10 h-10 flex items-center justify-center">
                             @isset($macroProcess->icon)
                             @php( $icon = "svg.macroprocess.$macroProcess->icon" )
                             <x-dynamic-component :component="$icon" width="100%" height="100%" class="flex-shrink-0" />
@@ -24,6 +24,17 @@
                             <span class="text-xs md:text-sm">{{ Str::upper($macroProcess->name . ' ' .
                                 $macroProcess->childs)
                                 }}</span>
+                        </div>
+                        <div class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="m-1 h-6 w-6 {{ $macroProcess->active === " 1"
+                                ? "text-green-500" : "text-red-500" }} "
+                                viewBox=" 0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M0 10a10 10 0 1020 0A10 10 0 000 10zm10-9a9 9 0 100 18 9 9 0 000-18z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                            <p class="ml-2 {{ $macroProcess->active === " 1" ? "text-green-500" : "text-red-500"
+                                }} ">{{ $macroProcess->active === " 1" ? "Activo" : "Inactivo" }} </p>
                         </div>
                         <div class="flex items-center justify-center gap-2 border-t-1 mt-2">
 
@@ -43,6 +54,19 @@
                             </x-button>
 
                         </div>
+                    </div>
+                </div>
+                {{-- Information --}}
+                <div class="flex flex-col w-2/5">
+                    <p class="text-lg font-medium">Description:</p>
+                    <p class="px-2 py-1 border border-gray-300 rounded-lg">
+                        {{ $macroProcess->description }}
+                    </p>
+                    <div class="small">
+                        <p class="text-lg font-small mt-4">Created at:</p>
+                        <p class="px-2 py-1 border border-gray-300 rounded-lg">January 1, 2021</p>
+                        <p class="text-lg font-small mt-4">Updated at:</p>
+                        <p class="px-2 py-1 border border-gray-300 rounded-lg">February 15, 2021</p>
                     </div>
                 </div>
 
@@ -107,7 +131,8 @@
                                                         colspan="4">&nbsp;
                                                         {{ print_r($activeTabsContent[$macroProcess->id]) }}
                                                     </td>
-                                                    {{-- @foreach ( $activeTabsContent[$macroProcess->id] ?? [] as $item)
+                                                    {{-- @foreach ( $activeTabsContent[$macroProcess->id] ?? [] as
+                                                    $item)
                                                     <tr class="text-xs">
                                                         <td class="py-2 px-4 border-b border-gray-150 whitespace-normal break-words"
                                                             style="width: {{ $maxNameLength }}rem;"
