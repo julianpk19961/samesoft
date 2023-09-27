@@ -10,10 +10,16 @@
                         <p class="text-slate-500">{{ $macroProcess->name }}</p>
 
                         <div class="mt-1 flex items-center justify-items-stretch">
-                            @php( $icon = "svg.macroprocess.$macroProcess->icon" )
+
+                            @php( $icon = $macroProcess->icon ? "svg.macroprocess.$macroProcess->icon" :
+                            "svg.misional.satisfaccion" )
                             <x-dynamic-component :component="$icon" width="20%" height="20%"
                                 title="{{ $macroProcess->name }}" id="iconDiv-{{ $macroProcess->name }}">
                             </x-dynamic-component>
+
+                            @!@isset($record)
+
+                            @endisset
 
                             <div class="mt-3 grid grid-cols-6 m-2 w-full font-light "
                                 id="areasDiv-{{ $macroProcess->name }}">

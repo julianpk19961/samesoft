@@ -11,30 +11,39 @@
             <li class="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 p-2"
                 wire:key="{{ $macroProcess->id }}">
                 <div class="flex flex-col md:flex-row items-center justify-center w-2/5">
-                    <div class="flex flex-col items-center justify-center w-full md:w-1/2">
+                    <div class="pt-5 flex flex-col items-center justify-center w-full md:w-1/2">
 
-                        <div class="w-10 h-10 flex items-center justify-center">
-                            @isset($macroProcess->icon)
-                            @php( $icon = "svg.macroprocess.$macroProcess->icon" )
-                            <x-dynamic-component :component="$icon" width="100%" height="100%" class="flex-shrink-0" />
-                            @endisset
+                        <div class="text-center">
+                            <div class="w-10 h-10 flex items-center justify-center mx-auto" id="svgIcon"
+                                title="{{ $macroProcess->description }}">
+                                @isset($macroProcess->icon)
+                                @php($icon = "svg.macroprocess.".$macroProcess->icon)
+                                @else
+                                @php($icon = "svg.standard.noneIcon")
+                                @endisset
+                                <x-dynamic-component :component="$icon" width="100%" height="100%"
+                                    class="flex-shrink-0" />
 
+                            </div>
+                            <div id="svgStatus" title="{{ $macroProcess->active === '1'
+                                ? "ACTIVO" : "INACTIVO" }}"
+                                class="text-lg font-bold truncate whitespace-normal text-center w-full flex justify-content-between">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 h-4 w-4 {{ $macroProcess->active === '1'
+                                 ? " text-green-500" : "text-red-500" }} "
+                                    viewBox=" 0 0 20 20" fill="currentColor">
+                                    <path fill-rule="nonzero"
+                                        d="M0 10a10 10 0 1020 0A10 10 0 000 10zm10-9a9 9 0 100 18 9 9 0 000-18z"
+                                        clip-rule="nonzero"></path>
+                                </svg>
+                                <span class="text-sm md:text-sm">{{ Str::upper($macroProcess->name)}} </span>
+                            </div>
                         </div>
-                        <div class="text-sm font-bold truncate whitespace-normal text-center w-full">
-                            <span class="text-xs md:text-sm">{{ Str::upper($macroProcess->name . ' ' .
-                                $macroProcess->childs)
-                                }}</span>
-                        </div>
-                        <div class="flex items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="m-1 h-6 w-6 {{ $macroProcess->active === " 1"
-                                ? "text-green-500" : "text-red-500" }} "
-                                viewBox=" 0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd"
-                                    d="M0 10a10 10 0 1020 0A10 10 0 000 10zm10-9a9 9 0 100 18 9 9 0 000-18z"
-                                    clip-rule="evenodd"></path>
-                            </svg>
-                            <p class="ml-2 {{ $macroProcess->active === " 1" ? "text-green-500" : "text-red-500"
-                                }} ">{{ $macroProcess->active === " 1" ? "Activo" : "Inactivo" }} </p>
+                        <div class="text-xs">
+                            <p class="text-xs font-small mt-4">
+                                <span class="text-align-left">{{ __("Creado: ".$macroProcess->created_at) }}</span>
+                                <br>
+                                <span class="text-align-left">{{ __("Modificado: ".$macroProcess->created_at) }}</span>
+                            </p>
                         </div>
                         <div class="flex items-center justify-center gap-2 border-t-1 mt-2">
 
@@ -56,22 +65,8 @@
                         </div>
                     </div>
                 </div>
-                {{-- Information --}}
-                <div class="flex flex-col w-2/5">
-                    <p class="text-lg font-medium">Description:</p>
-                    <p class="px-2 py-1 border border-gray-300 rounded-lg">
-                        {{ $macroProcess->description }}
-                    </p>
-                    <div class="small">
-                        <p class="text-lg font-small mt-4">Created at:</p>
-                        <p class="px-2 py-1 border border-gray-300 rounded-lg">January 1, 2021</p>
-                        <p class="text-lg font-small mt-4">Updated at:</p>
-                        <p class="px-2 py-1 border border-gray-300 rounded-lg">February 15, 2021</p>
-                    </div>
-                </div>
-
                 <div class="flex flex-col w-3/5">
-                    <div class="w-full max-w-lg">
+                    <div class="w-full">
                         <div class="flex justify-center">
                             <div class="border border-gray-300 rounded-lg">
 
