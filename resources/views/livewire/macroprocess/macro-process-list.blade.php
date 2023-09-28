@@ -26,7 +26,7 @@
 
                             </div>
                             <div id="svgStatus" title="{{ $macroProcess->active === '1'
-                                ? "ACTIVO" : "INACTIVO" }}"
+                                ? " ACTIVO" : "INACTIVO" }}"
                                 class="text-lg font-bold truncate whitespace-normal text-center w-full flex justify-content-between">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 h-4 w-4 {{ $macroProcess->active === '1'
                                  ? " text-green-500" : "text-red-500" }} "
@@ -72,7 +72,7 @@
 
                                 <div class="flex" wire:key='{{ $macroProcess->name }}'>
                                     @foreach ($this->tabs as $tabTitle => $tabContent)
-                                    <div class="px-4 py-2 cursor-pointer {{ isset($this->activeTabs[$macroProcess->id]) && $this->activeTabs[$macroProcess->id] === $tabTitle ? 'text-blue-500 bg-gray-200' : 'text-gray-500' }}"
+                                    <div class="px-4 py-2 cursor-pointer {{ isset($activeTabs[$macroProcess->id]) && $activeTabs[$macroProcess->id] === $tabTitle ? 'text-blue-500 bg-gray-200' : 'text-gray-500' }}"
                                         wire:click="setActiveTab('{{ $tabTitle }}','{{ $macroProcess->id }}')">
                                         {{ $tabTitle }}
                                     </div>
@@ -85,15 +85,13 @@
                                 </div>
 
                                 <div class="p-2">
-
-                                    @if ($activeTab)
                                     <div class="overflow-x-auto rounded-lg">
                                         <table class="w-full bg-white border border-gray-300"
                                             style="table-layout: fixed;">
                                             <thead>
-                                                <tr>
+                                                <tr class="w-full">
                                                     <th class="py-2 px-4 border-gray-300 font-medium text-white bg-gray-800"
-                                                        rowspan="2">
+                                                        colspan="2" &nbsp;>
                                                         Nombre
                                                     </th>
                                                     <th
@@ -111,54 +109,68 @@
                                                 </tr>
                                             </thead>
                                             <tbody class="border">
+                                                @if(isset($activeTabs[$macroProcess->id]))
+                                                {{ get_class($collectionTabContent[$macroProcess->id]) }}
+                                                @if($activeTabs[$macroProcess->id] == 'Macroprocesos')
+                                                @php($collection = $macroProcess->children)
+                                                @elseif($activeTabs[$macroProcess->id] == 'Areas')
+                                                @php($collection = $macroProcess->areas)
+                                                @elseif($activeTabs[$macroProcess->id] == 'Politicas')
+                                                @php($collection = collect([]))
+                                                @elseif($activeTabs[$macroProcess->id] == 'Documentos')
+                                                @php($collection = collect([]))
+                                                @endif
 
-                                                @if ( !isset($activeTabsContent[$macroProcess->id]))
-                                                @for ($i = 0; $i < 2; $i++) <tr>
-                                                    <td class="py-2 px-4 border-b border-gray-100 empty-cell whitespace-normal break-words text-xs text-center bg-gray-300"
-                                                        colspan="4">&nbsp;
-                                                        No se encontraron registros
+                                                @if($collection->count()>0)
+
+                                                @foreach ($collection as $item)
+                                                <tr>
+                                                    <td class="py-2 px-4 border-b border-gray-150 whitespace-normal break-words"
+                                                        colspan="2">&nbsp;
+                                                        {{ $item->name }}
+                                                    </td>
+                                                    <td class="py-2 px-4 border-b border-gray-150">
+                                                        test
                                                     </td>
 
-                                                    </tr>
-                                                    @endfor
-                                                    @else
-                                                    <td class="py-2 px-4 border-b border-gray-100 empty-cell whitespace-normal break-words text-xs text-center bg-gray-300"
-                                                        colspan="4">&nbsp;
-                                                        {{ print_r($activeTabsContent[$macroProcess->id]) }}
+                                                    <td class="py-2 px-4 border-b border-gray-150"
+                                                        title="{{ $item->description }}">
+                                                        {{ Str::limit(Str::lower($item->description), 10, '...')
+                                                        }}
                                                     </td>
-                                                    {{-- @foreach ( $activeTabsContent[$macroProcess->id] ?? [] as
-                                                    $item)
-                                                    <tr class="text-xs">
-                                                        <td class="py-2 px-4 border-b border-gray-150 whitespace-normal break-words"
-                                                            style="width: {{ $maxNameLength }}rem;"
-                                                            title="{{ $item->name }}@isset($item->description): {{ $item->description }}@endisset">
-                                                            {{ Str::upper($item->name )
-                                                            }}
-                                                        </td>
-                                                        <td class="py-2 px-4 border-b border-gray-150">{{
-                                                            $item->column2
-                                                            }}</td>
-                                                        <td class="py-2 px-4 border-b border-gray-150">
-                                                            {{ Str::limit(Str::lower($item->description), 10, '...')
-                                                            }}
-                                                        </td>
-                                                        <td class="py-2 px-4 border-b border-gray-150">
+                                                    <td class="text-center border-b">
+                                                        <x-button wire:click="disableDelete({{ $item->id }})"
+                                                            wire:loading.attr="disabled"
+                                                            class="bg-red-600 flex-shrink-0"
+                                                            title="Eliminar/Inactivar Registro">
+                                                            <i class="fa-solid fa-trash"></i>
+                                                        </x-button>
+                                                    </td>
+                                                </tr>
 
-                                                            <x-button wire:click="disableDelete({{ $item->id }})"
-                                                                wire:loading.attr="disabled"
-                                                                class="bg-red-600 flex-shrink-0"
-                                                                title="Eliminar/Inactivar Registro">
-                                                                <i class="fa-solid fa-trash"></i>
-                                                            </x-button>
-
+                                                @endforeach
+                                                @if ($collection->count() < 3) @for($i=$collection->count(); $i <3
+                                                        ;$i++) <tr w="full">
+                                                        <td class="py-2 px-4 border-b border-gray-100 empty-cell whitespace-normal break-words text-xs text-center bg-gray-300"
+                                                            colspan="5">&nbsp;
+                                                            No se encontraron registros
                                                         </td>
-                                                    </tr>
-                                                    @endforeach --}}
-                                                    @endif
+                                                        </tr>
+                                                        @endfor
+                                                        @endif
+                                                        @else
+                                                        @for($i=0; $i <3 ;$i++) <tr w="full">
+                                                            <td class="py-2 px-4 border-b border-gray-100 empty-cell whitespace-normal break-words text-xs text-center bg-gray-300"
+                                                                colspan="5">&nbsp;
+                                                                No se encontraron registros
+                                                            </td>
+                                                            </tr>
+                                                            @endfor
+                                                            @endif
+                                                            @endif
                                             </tbody>
                                         </table>
                                     </div>
-                                    @endif
                                 </div>
                             </div>
 

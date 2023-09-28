@@ -11,15 +11,16 @@ use Illuminate\Support\Facades\Log;
 
 class MacroProcessList extends Component
 {
-    public $MacroProcesses, $activeTab, $tabs, $items, $maxNameLength,
+    public $MacroProcesses, $tabs, $items, $maxNameLength,
         $selectedMacroProcess, $selectedMacroProcessId, $selectedMacroProcessName,
         $selectedMacroProcessParent, $selectedMacroProcessIcon, $selectedMacroProcessDescription, $macroProcessList, $currentMacroprocess;
 
+    public $activeTab = 'Macroprocesos';
     public $showModal = false;
     public $showAddRecordsModal = false;
     public $macroProcessCheckedList = [];
-    public $activeTabs = [];
-    public $activeTabsContent = [];
+    public $activeTabs;
+    public $collectionTabContent;
 
 
 
@@ -29,9 +30,6 @@ class MacroProcessList extends Component
     {
         $this->showModal = false;
 
-
-        // $this->resetActiveTabs();
-
         $this->tabs = [
             'Macroprocesos' => 'children',
             'Areas' => 'areas',
@@ -39,8 +37,12 @@ class MacroProcessList extends Component
             'Documentos' => 'documentos',
         ];
 
-        $this->activeTab = 'Macroprocesos';
-        $this->getMacroProcessesProperty();
+        $macroProcesses = $this->getMacroProcessesProperty();
+
+        foreach ($macroProcesses as $macroProcess) {
+            $this->activeTabs[$macroProcess->id] = $this->activeTab;
+            $this->collectionTabContent[$macroProcess->id] = collect([]);
+        }
     }
 
     public function showMacroProcessDetails(macro_processes $selectedMacroProcess)
@@ -123,12 +125,6 @@ class MacroProcessList extends Component
     public function getMacroProcessesProperty($filters = [])
     {
         $query = macro_processes::all();
-
-        if (!empty($filters)) {
-            foreach ($filters as $column => $value) {
-                $query->where($column, $value);
-            }
-        }
         return $query;
     }
 
@@ -136,32 +132,24 @@ class MacroProcessList extends Component
     public function setActiveTab($index, macro_processes $currentMacroprocess)
     {
 
-
         if (!isset($this->activeTabs[$currentMacroprocess->id])) {
             $this->activeTabs[$currentMacroprocess->id] = [];
-            $this->activeTabsContent[$currentMacroprocess->id] = [];
         }
 
         $this->activeTabs[$currentMacroprocess->id] = $index;
 
-        // Seleccionar el contenido dependiendo de la pestaña clickeada
-        if ($this->activeTabs[$currentMacroprocess->id] == 'Macroprocesos') {
-            $this->activeTabsContent[$currentMacroprocess->id] = $currentMacroprocess->children;
+        if ($index == 'Macroprocesos') {
+            $this->collectionTabContent[$currentMacroprocess->id] = $currentMacroprocess->children;
         } elseif ($index == 'Areas') {
-            $this->activeTabsContent[$currentMacroprocess->id] = $currentMacroprocess->areas;
+            $this->collectionTabContent[$currentMacroprocess->id] = $currentMacroprocess->areas;
+        } elseif ($index == "Politicas") {
+            $this->collectionTabContent[$currentMacroprocess->id] = collect([]);
+        } elseif ($index == 'Documentos') {
+            $this->collectionTabContent[$currentMacroprocess->id] = $currentMacroprocess->documents;
         } else {
-            unset($this->activeTabsContent[$currentMacroprocess->id]);
-        }
-
-        //verificar si no encontró registros.
-        if (isset($this->activeTabsContent[$currentMacroprocess->id])) {
-            if ($this->activeTabsContent[$currentMacroprocess->id]->isEmpty() === true || empty($this->activeTabsContent[$currentMacroprocess->id])) {
-                unset($this->activeTabsContent[$currentMacroprocess->id]);
-            }
+            $this->collectionTabContent[$currentMacroprocess->id] = collect([]);
         }
     }
-
-
 
     public function render()
     {
