@@ -41,7 +41,7 @@ class MacroProcessList extends Component
 
         foreach ($macroProcesses as $macroProcess) {
             $this->activeTabs[$macroProcess->id] = $this->activeTab;
-            $this->collectionTabContent[$macroProcess->id] = collect([]);
+            $this->collectionTabContent[$macroProcess->id] = $macroProcess->children->count() > 0 ? $macroProcess->children :  collect([]);
         }
     }
 
@@ -143,12 +143,13 @@ class MacroProcessList extends Component
         } elseif ($index == 'Areas') {
             $this->collectionTabContent[$currentMacroprocess->id] = $currentMacroprocess->areas;
         } elseif ($index == "Politicas") {
-            $this->collectionTabContent[$currentMacroprocess->id] = collect([]);
+            $this->collectionTabContent[$currentMacroprocess->id] = collect();
         } elseif ($index == 'Documentos') {
             $this->collectionTabContent[$currentMacroprocess->id] = $currentMacroprocess->documents;
         } else {
-            $this->collectionTabContent[$currentMacroprocess->id] = collect([]);
+            $this->collectionTabContent[$currentMacroprocess->id] = collect();
         }
+        $this->collectionTabContent[$currentMacroprocess->id] = $this->collectionTabContent[$currentMacroprocess->id] ?? collect();
     }
 
     public function render()

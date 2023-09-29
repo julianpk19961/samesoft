@@ -7,6 +7,7 @@ use App\Models\Macro_Processes;
 // PRUEBAS
 use Illuminate\Support\Facades\log;
 use Carbon\Carbon;
+use Livewire\Livewire;
 
 class MacroProcessDelete extends Component
 {
@@ -49,10 +50,10 @@ class MacroProcessDelete extends Component
             return false;
         }
 
-            if ($performDelete) {
+        if ($performDelete) {
             $macroProcess->delete();
-            $this->updateList();
         }
+        $this->updateList();
     }
 
     public function disableDelete($macroProcess)

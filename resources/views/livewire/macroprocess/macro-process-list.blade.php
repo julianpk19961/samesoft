@@ -49,14 +49,18 @@
 
                             @livewire('macro-process-delete', ['macroProcess' => $macroProcess], key($macroProcess->id))
 
-                            {{-- wire:click="showMacroProcessDetails({{ $macroProcess->id }}) --}}
-                            <x-button {{-- wire:click="$toggle('showModal')" --}}
-                                wire:click="showMacroProcessDetails({{ $macroProcess->id }})"
-                                wire:loading.attr="disabled" class="bg-green-600 text-white">
+                            <x-button wire:click="showMacroProcessDetails({{ $macroProcess->id }})"
+                                wire:loading.attr="disabled" class="bg-green-600 text-white" color="warning">
                                 <i class="fa-solid fa-eye"></i>
                             </x-button>
 
-                            <x-button wire:click="addMacroProcessDetails({{ $macroProcess->id }})"
+                            <x-button wire:click="addMacroProcessDetails({{ $macroProcess->id }})" color="orange"
+                                class="bg-orange-500 text-sm" title="Modificar Macroproceso"
+                                id="add-{{ $macroProcess->id }}">
+                                <i class="fa fa-solid fa-pen"></i>
+                            </x-button>
+
+                            <x-button wire:click="addMacroProcessDetails({{ $macroProcess->id }})" color="cyan"
                                 class="bg-cyan-500 text-sm" title="Agregar Macroproceso"
                                 id="add-{{ $macroProcess->id }}">
                                 <i class="fa fa-solid fa-circle-plus"></i>
@@ -110,36 +114,26 @@
                                             </thead>
                                             <tbody class="border">
                                                 @if(isset($activeTabs[$macroProcess->id]))
-                                                {{ get_class($collectionTabContent[$macroProcess->id]) }}
-                                                @if($activeTabs[$macroProcess->id] == 'Macroprocesos')
-                                                @php($collection = $macroProcess->children)
-                                                @elseif($activeTabs[$macroProcess->id] == 'Areas')
-                                                @php($collection = $macroProcess->areas)
-                                                @elseif($activeTabs[$macroProcess->id] == 'Politicas')
-                                                @php($collection = collect([]))
-                                                @elseif($activeTabs[$macroProcess->id] == 'Documentos')
-                                                @php($collection = collect([]))
-                                                @endif
 
-                                                @if($collection->count()>0)
+                                                @if(count($collectionTabContent[$macroProcess->id])>0)
 
-                                                @foreach ($collection as $item)
-                                                <tr>
+                                                @foreach ($collectionTabContent[$macroProcess->id] as $item)
+                                                <tr wire:click="showMacroProcessDetails({{ $item['id'] }})">
                                                     <td class="py-2 px-4 border-b border-gray-150 whitespace-normal break-words"
                                                         colspan="2">&nbsp;
-                                                        {{ $item->name }}
+                                                        {{ $item['name'] }}
                                                     </td>
                                                     <td class="py-2 px-4 border-b border-gray-150">
                                                         test
                                                     </td>
 
                                                     <td class="py-2 px-4 border-b border-gray-150"
-                                                        title="{{ $item->description }}">
-                                                        {{ Str::limit(Str::lower($item->description), 10, '...')
+                                                        title="{{ $item['description'] }}">
+                                                        {{ Str::limit(Str::lower($item['description']), 10, '...')
                                                         }}
                                                     </td>
                                                     <td class="text-center border-b">
-                                                        <x-button wire:click="disableDelete({{ $item->id }})"
+                                                        <x-button wire:click="disableDelete({{ $item['id'] }})"
                                                             wire:loading.attr="disabled"
                                                             class="bg-red-600 flex-shrink-0"
                                                             title="Eliminar/Inactivar Registro">
@@ -149,8 +143,9 @@
                                                 </tr>
 
                                                 @endforeach
-                                                @if ($collection->count() < 3) @for($i=$collection->count(); $i <3
-                                                        ;$i++) <tr w="full">
+                                                @if (count($collectionTabContent[$macroProcess->id]) < 3)
+                                                    @for($i=count($collectionTabContent[$macroProcess->id]);
+                                                    $i <3 ;$i++) <tr w="full">
                                                         <td class="py-2 px-4 border-b border-gray-100 empty-cell whitespace-normal break-words text-xs text-center bg-gray-300"
                                                             colspan="5">&nbsp;
                                                             No se encontraron registros
@@ -173,9 +168,6 @@
                                     </div>
                                 </div>
                             </div>
-
-
-
                         </div>
                     </div>
 
@@ -198,7 +190,7 @@
 
                         <div class="col-span-12 sm:col-span-10">
                             <x-label for="name" value="{{ __('Name') }}" />
-                            <x-input id="name" type="text" class="mb-2 block w-full" autocomplete="name"
+                            <x-input id="name" type="text" class="bg-gray-300 mb-2 block w-full" autocomplete="name"
                                 value="{{ $selectedMacroProcessName  }}" :disabled="True" />
                             <x-input-error for="name" class="mt-2" />
                         </div>
@@ -210,7 +202,7 @@
                                 <div class="flex-col w-1/2">
                                     <x-label for="macroprocess_id" value="{{ __('Asignado') }}" />
 
-                                    <x-input id="macroprocess_id" type="text" class="mb-2 block w-full"
+                                    <x-input id="macroprocess_id" type="text" class="bg-gray-300 mb-2 block w-full"
                                         autocomplete="name" value="{{ $selectedMacroProcessParent }}"
                                         :disabled="True" />
                                     <x-input-error for="macroprocess_id" class="mt-2" />
@@ -219,7 +211,7 @@
                                 {{-- iconos --}}
                                 <div class="flex-col w-1/2">
                                     <x-label for="icon" value="{{ __('Icono') }}" />
-                                    <x-input id="macroprocess_id" type="text" class="mb-2 block w-full"
+                                    <x-input id="macroprocess_id" type="text" class="bg-gray-300 mb-2 block w-full"
                                         autocomplete="name" value="{{ Str::upper($selectedMacroProcessIcon) }}"
                                         :disabled="True" />
                                     <x-input-error for="icon" class="mt-2" />
@@ -232,7 +224,7 @@
                             <x-label for="description" value="{{ __('Descripción') }}" />
                             <textarea name="description" id="description" rows="3"
                                 title="descripción: {{ $selectedMacroProcessDescription }}"
-                                class="w-full mt-1 block border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                                class="bg-gray-300 w-full mt-1 block border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
                                 readonly> {{ $selectedMacroProcessDescription }}</textarea>
                             <x-input-error for="description" class="mt-2" />
                         </div>
@@ -250,18 +242,12 @@
                             @endif
                         </div>
                     </div>
-
-
                 </x-slot>
 
                 <x-slot name="footer">
                     <x-secondary-button wire:click="toggleModal" wire:loading.attr="disabled">
                         {{ __('Cerrar') }}
                     </x-secondary-button>
-
-                    <x-button class="ml-2" wire:click="submit" wire:loading.attr="disabled" color="green">
-                        {{ __('Guardar') }}
-                    </x-button>
                 </x-slot>
             </x-confirmation-modal>
 
@@ -284,7 +270,7 @@
                         <hr class="border-t border-gray-300 m-1 w-full">
                         @endforeach
                         @else
-                        <p class="text-gray-500">No hay elementos disponibles.</p>
+                        <p class="text-gray-500">No hay elementos disponibles para ser asignados.</p>
                         @endif
                     </div>
                     <p>{{ count($macroProcessCheckedList) }} elementos seleccionados.</p>
@@ -296,10 +282,13 @@
                         {{ __('Cerrar') }}
                     </x-secondary-button>
 
+                    @if ($macroProcessList && count($macroProcessList)>0)
                     <x-button class="ml-2" wire:click="AddRecordsMacroprocess" wire:loading.attr="disabled"
                         color="green">
                         {{ __('Guardar') }}
                     </x-button>
+                    @endif
+
                 </x-slot>
             </x-confirmation-modal>
         </div>
@@ -311,7 +300,4 @@
             /* Establece la altura máxima deseada */
         }
     </style>
-
-
-
 </div>
