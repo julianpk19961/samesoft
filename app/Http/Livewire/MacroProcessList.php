@@ -7,16 +7,23 @@ use App\Models\macro_processes;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Support\Facades\Log;
-
+use SebastianBergmann\CodeCoverage\Driver\Selector;
 
 class MacroProcessList extends Component
 {
-    public $MacroProcesses, $tabs, $items, $maxNameLength,
-        $selectedMacroProcess, $selectedMacroProcessId, $selectedMacroProcessName,
-        $selectedMacroProcessParent, $selectedMacroProcessIcon, $selectedMacroProcessDescription, $macroProcessList, $currentMacroprocess;
+    public $MacroProcesses, $tabs, $macroProcessList, $currentMacroprocess;
 
-    public $activeTab = 'Macroprocesos';
+
+    //SHOW DATA
+    public $selectedMacroProcess = null;
+
+    //MODIFYDATA
+    public $updateName, $updateParent, $updateIcon, $updateDescription;
+
+    public $defaultTab = 'Macroprocesos';
     public $showModal = false;
+    public $disable = True;
+    public $updateMacroProcess = False;
     public $showAddRecordsModal = false;
     public $macroProcessCheckedList = [];
     public $activeTabs;
@@ -24,7 +31,7 @@ class MacroProcessList extends Component
 
 
 
-    protected $listeners = ['updateList' => '$refresh'];
+    protected $listeners = ['updateList' => 'mount'];
 
     public function mount()
     {
@@ -38,32 +45,36 @@ class MacroProcessList extends Component
         ];
 
         $macroProcesses = $this->getMacroProcessesProperty();
-
-        foreach ($macroProcesses as $macroProcess) {
-            $this->activeTabs[$macroProcess->id] = $this->activeTab;
-            $this->collectionTabContent[$macroProcess->id] = $macroProcess->children->count() > 0 ? $macroProcess->children :  collect([]);
-        }
+        $this->resetActiveTabs();
     }
 
     public function showMacroProcessDetails(macro_processes $selectedMacroProcess)
     {
-        $this->selectedMacroProcessId = $selectedMacroProcess->id;
-        $this->selectedMacroProcessName = $selectedMacroProcess->name;
-        $this->selectedMacroProcessParent = !$selectedMacroProcess->macroprocess_id ? '' : macro_processes::findOrFail($selectedMacroProcess->macroprocess_id)->name;
-        $this->selectedMacroProcessIcon = $selectedMacroProcess->icon;
-        $this->selectedMacroProcessDescription = $selectedMacroProcess->description ? $selectedMacroProcess->description : '';
+        $this->selectedMacroProcess = $selectedMacroProcess;
+        $this->disable = true;
         $this->showModal = true;
-        // $this->render();
+    }
+
+    public function editMacroProcessDetails(macro_processes $selectedMacroProcess)
+    {
+        $this->selectedMacroProcess = $selectedMacroProcess;
+        $this->disable = false;
+        $this->showModal = true;
+        $this->dispatchBrowserEvent('focus', ['selector', '#closeModal']);
     }
 
 
-
-    public function resetActiveTabs($activeTab)
+    public function updateMacroProcess()
     {
-        $this->activeTab = [];
+        dd($this->showModal);
+        // dd($selectedMacroProcess);
+    }
 
+    public function resetActiveTabs()
+    {
         foreach ($this->macroProcesses as $macroProcess) {
-            $this->activeTab[$macroProcess->id] = 'Macroprocesos';
+            $this->activeTabs[$macroProcess->id] = $this->defaultTab;
+            $this->collectionTabContent[$macroProcess->id] = $macroProcess->children->count() > 0 ? $macroProcess->children :  collect([]);
         }
     }
 
@@ -71,17 +82,15 @@ class MacroProcessList extends Component
     {
         $macroProcess->macroprocess_id = null;
         $macroProcess->save();
-        $this->emit('updateList');
+        // $this->emit('updateList');
+        $this->mount();
     }
 
-    public function toggleModal()
+    public function closeModal()
     {
+        unset($this->selectedMacroProcess);
         $this->showModal = !$this->showModal;
-        $this->selectedMacroProcessId = '';
-        $this->selectedMacroProcessName = '';
-        $this->selectedMacroProcessParent = '';
-        $this->selectedMacroProcessIcon = '';
-        $this->selectedMacroProcessDescription = '';
+        $this->disable = True;
     }
 
     public function addMacroProcessDetails(macro_processes $selectedMacroProcess)
@@ -117,7 +126,7 @@ class MacroProcessList extends Component
 
         $this->currentMacroprocess = null; // Cambia '' a null
         $this->toggleAddRecordsModal();
-        $this->emit('updateList');
+        $this->mount();
     }
 
 

@@ -45,9 +45,6 @@ class MacroProcessDelete extends Component
             $macroProcess->active = !$macroProcess->active;
             $macroProcess->save();
             $this->updateList();
-            $data['ACCION'] = $macroProcess->active ? 'INACTIVADO' : 'ACTIVADO';
-            LOG::debug($data);
-            return false;
         }
 
         if ($performDelete) {
@@ -59,17 +56,6 @@ class MacroProcessDelete extends Component
     public function disableDelete($macroProcess)
     {
         return false;
-        // if ($this->disableEjecte) {
-
-        //     LOG::debug(['Recepción - disableDelete - OPEN' => $macroProcess]);
-        //     $this->disableEjecte = false;
-        //     return false;
-        // }
-        // $this->$macroProcess = Macro_Processes::findOrFail($macroProcess);
-        // $this->macroProcess = $macroProcess;
-
-        // $this->performDelete = false;
-        // $this->delete($macroProcess);
     }
 
     public function render()

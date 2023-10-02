@@ -54,7 +54,7 @@
                                 <i class="fa-solid fa-eye"></i>
                             </x-button>
 
-                            <x-button wire:click="addMacroProcessDetails({{ $macroProcess->id }})" color="orange"
+                            <x-button wire:click="editMacroProcessDetails({{ $macroProcess->id }})" color="orange"
                                 class="bg-orange-500 text-sm" title="Modificar Macroproceso"
                                 id="add-{{ $macroProcess->id }}">
                                 <i class="fa fa-solid fa-pen"></i>
@@ -118,16 +118,19 @@
                                                 @if(count($collectionTabContent[$macroProcess->id])>0)
 
                                                 @foreach ($collectionTabContent[$macroProcess->id] as $item)
-                                                <tr wire:click="showMacroProcessDetails({{ $item['id'] }})">
-                                                    <td class="py-2 px-4 border-b border-gray-150 whitespace-normal break-words"
+                                                <tr>
+                                                    <td wire:click="showMacroProcessDetails({{ $item['id'] }})"
+                                                        class="py-2 px-4 border-b border-gray-150 whitespace-normal break-words"
                                                         colspan="2">&nbsp;
                                                         {{ $item['name'] }}
                                                     </td>
-                                                    <td class="py-2 px-4 border-b border-gray-150">
+                                                    <td wire:click="showMacroProcessDetails({{ $item['id'] }})"
+                                                        class="py-2 px-4 border-b border-gray-150">
                                                         test
                                                     </td>
 
-                                                    <td class="py-2 px-4 border-b border-gray-150"
+                                                    <td wire:click="showMacroProcessDetails({{ $item['id'] }})"
+                                                        class="py-2 px-4 border-b border-gray-150"
                                                         title="{{ $item['description'] }}">
                                                         {{ Str::limit(Str::lower($item['description']), 10, '...')
                                                         }}
@@ -178,10 +181,10 @@
         {{-- modal --}}
         <div
             class="flex items-center justify-end px-4 py-3 bg-gray-100 text-right sm:px-6 shadow sm:rounded-bl-md sm:rounded-br-md">
-
-            <x-confirmation-modal wire:model="showModal" class="bg-slate-100">
+            @if($showModal)
+            <x-confirmation-modal wire:model="showModal" class="bg-slate-100" backdrop="static">
                 <x-slot name="title">
-                    {{ $selectedMacroProcessName }}
+                    {{ $selectedMacroProcess->name }}
                 </x-slot>
 
                 <x-slot name="content">
@@ -190,8 +193,10 @@
 
                         <div class="col-span-12 sm:col-span-10">
                             <x-label for="name" value="{{ __('Name') }}" />
-                            <x-input id="name" type="text" class="bg-gray-300 mb-2 block w-full" autocomplete="name"
-                                value="{{ $selectedMacroProcessName  }}" :disabled="True" />
+                            <x-input id="updateName" type="text"
+                                class="{{ $disable !== True ?:'bg-gray-300'  }} mb-2 block w-full" autocomplete="name"
+                                value="{{ $selectedMacroProcess->name  }}" :disabled="$disable"
+                                wire.model="{{ $disable === true?null:'updateName' }}" />
                             <x-input-error for="name" class="mt-2" />
                         </div>
 
@@ -202,18 +207,23 @@
                                 <div class="flex-col w-1/2">
                                     <x-label for="macroprocess_id" value="{{ __('Asignado') }}" />
 
-                                    <x-input id="macroprocess_id" type="text" class="bg-gray-300 mb-2 block w-full"
-                                        autocomplete="name" value="{{ $selectedMacroProcessParent }}"
-                                        :disabled="True" />
+                                    <x-input id="macroprocess_id" type="text"
+                                        class="{{ $disable !== True ?:'bg-gray-300'  }} mb-2 block w-full"
+                                        autocomplete="name" value="{{ $selectedMacroProcess->parents->name ?? null }}"
+                                        :disabled="$disable"
+                                        wire.model.lazy="{{ $disable === true?null:'updateParent' }}" />
                                     <x-input-error for="macroprocess_id" class="mt-2" />
                                 </div>
 
                                 {{-- iconos --}}
                                 <div class="flex-col w-1/2">
                                     <x-label for="icon" value="{{ __('Icono') }}" />
-                                    <x-input id="macroprocess_id" type="text" class="bg-gray-300 mb-2 block w-full"
-                                        autocomplete="name" value="{{ Str::upper($selectedMacroProcessIcon) }}"
-                                        :disabled="True" />
+                                    <x-input id="macroprocess_id" type="text"
+                                        class="{{ $disable !== True ?:'bg-gray-300'  }} mb-2 block w-full"
+                                        autocomplete="name"
+                                        value="{{ Str::upper($selectedMacroProcess->icon) ?? 'NONE' }}"
+                                        :disabled="$disable"
+                                        wire.model.lazy="{{ $disable === true?null:'updateIcon' }}" />
                                     <x-input-error for="icon" class="mt-2" />
 
                                 </div>
@@ -223,9 +233,10 @@
                         <div class="col-span-12 sm:col-span-10">
                             <x-label for="description" value="{{ __('Descripción') }}" />
                             <textarea name="description" id="description" rows="3"
-                                title="descripción: {{ $selectedMacroProcessDescription }}"
-                                class="bg-gray-300 w-full mt-1 block border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                                readonly> {{ $selectedMacroProcessDescription }}</textarea>
+                                title="descripción: {{ $selectedMacroProcess->description ?? '' }}"
+                                class="{{ $disable !== True ?:'bg-gray-300'  }} w-full mt-1 block border-gray-300 rounded-md shadow-sm"
+                                @readonly($disable)
+                                wire.model.lazy="{{ $disable === true?null:'updateDescription' }}"> {{ $selectedMacroProcess->description }}</textarea>
                             <x-input-error for="description" class="mt-2" />
                         </div>
 
@@ -245,12 +256,19 @@
                 </x-slot>
 
                 <x-slot name="footer">
-                    <x-secondary-button wire:click="toggleModal" wire:loading.attr="disabled">
+                    <x-secondary-button wire:click="closeModal" wire:loading.attr="disabled" id="closeModal">
                         {{ __('Cerrar') }}
                     </x-secondary-button>
+
+                    @if ($disable === false )
+                    <x-button class="ml-2" wire:click="updateMacroProcess" wire:loading.attr="disabled" color="green">
+                        {{ __('Guardar') }}
+                    </x-button>
+                    @endif
+
                 </x-slot>
             </x-confirmation-modal>
-
+            @endif
             <x-confirmation-modal wire:model="showAddRecordsModal" class="w-100">
                 <x-slot name="title">
                     {{ __('Asignación de macroproceso') }}
