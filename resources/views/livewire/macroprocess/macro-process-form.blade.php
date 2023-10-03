@@ -2,7 +2,7 @@
     <div class="md:grid md:grid-cols-3 md:gap-6">
 
         <x-section-title>
-            <x-slot name="title">{{ __('Nuevo Macroprocesos') }}</x-slot>
+            <x-slot name="title">{{ __('Crear Macroproceso') }}</x-slot>
             <x-slot name="description">
                 {{ __('A continuación podrá ver un formulario de creación para agregar uno o más macroprocesos según sea
                 necesario.') }}

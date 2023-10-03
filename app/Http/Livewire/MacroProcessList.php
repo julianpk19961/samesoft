@@ -4,10 +4,8 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\macro_processes;
-use Illuminate\Support\Facades\DB;
-
-use Illuminate\Support\Facades\Log;
-use SebastianBergmann\CodeCoverage\Driver\Selector;
+use Illuminate\Support\Str;
+use App\Http\Livewire\getIcons;
 
 class MacroProcessList extends Component
 {
@@ -16,6 +14,13 @@ class MacroProcessList extends Component
 
     //SHOW DATA
     public $selectedMacroProcess = null;
+
+    //SHOWBLADE:
+    public $showName,
+        $showParent,
+        $showIcon,
+        $showDescription,
+        $svgIcons;
 
     //MODIFYDATA
     public $updateName, $updateParent, $updateIcon, $updateDescription;
@@ -51,6 +56,11 @@ class MacroProcessList extends Component
     public function showMacroProcessDetails(macro_processes $selectedMacroProcess)
     {
         $this->selectedMacroProcess = $selectedMacroProcess;
+        $this->showName = Str::upper($selectedMacroProcess->name) ?? null;
+        $this->showParent = isset($selectedMacroProcess->parents->name) ? Str::upper($selectedMacroProcess->parents->name) : null;
+        $this->showIcon = Str::upper($selectedMacroProcess->icon) ?? null;
+        $this->showDescription = Str::upper($selectedMacroProcess->description) ?? null;
+
         $this->disable = true;
         $this->showModal = true;
     }
@@ -58,16 +68,27 @@ class MacroProcessList extends Component
     public function editMacroProcessDetails(macro_processes $selectedMacroProcess)
     {
         $this->selectedMacroProcess = $selectedMacroProcess;
+        $this->updateName = $selectedMacroProcess->name;
+        $this->updateParent = $selectedMacroProcess->parent->name ?? null;
+        $this->updateIcon = $selectedMacroProcess->icon ?? null;
+        $this->updateDescription = $selectedMacroProcess->description ?? null;
+        $this->svgIcons = getIcons::getSvgIcons();
         $this->disable = false;
         $this->showModal = true;
-        $this->dispatchBrowserEvent('focus', ['selector', '#closeModal']);
     }
 
 
     public function updateMacroProcess()
     {
-        dd($this->showModal);
-        // dd($selectedMacroProcess);
+
+        $this->selectedMacroProcess;
+        $this->selectedMacroProcess->name = $this->updateName;
+        $this->selectedMacroProcess->macroprocess_id = $this->updateParent ?? null;
+        $this->selectedMacroProcess->icon = $this->updateIcon ?? null;
+        $this->selectedMacroProcess->description = $this->updateDescription ?? null;
+        $this->selectedMacroProcess->save();
+        $this->closeModal();
+        $this->mount();
     }
 
     public function resetActiveTabs()
@@ -89,6 +110,7 @@ class MacroProcessList extends Component
     public function closeModal()
     {
         unset($this->selectedMacroProcess);
+        unset($this->svgIcons);
         $this->showModal = !$this->showModal;
         $this->disable = True;
     }

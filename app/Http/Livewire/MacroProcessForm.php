@@ -32,16 +32,23 @@ class MacroProcessForm extends Component
     {
 
         $iconDirectory = resource_path('views/components/svg/macroprocess');
+        $svgIcons = collect();
 
         if (File::exists($iconDirectory)) {
             $svgIcons = collect(File::files($iconDirectory))
                 ->map(function ($file) {
                     return str_replace('.blade.php', '', $file->getFilename());
                 });
-            return $svgIcons;
+            // return $svgIcons;
         }
 
-        return collect();
+        return $svgIcons;
+    }
+
+    public static function getIcons(): object
+    {
+        $svgIcons = self::getSvgIconsProperty();
+        return $svgIcons;
     }
 
     public function submit()
