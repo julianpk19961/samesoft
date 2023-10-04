@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\macro_processes;
 use Livewire\Component;
+use App\http\Livewire\getIcons;
 use Illuminate\Support\Facades\File;
 use Mail;
 
@@ -20,7 +21,8 @@ class MacroProcessForm extends Component
         $svgIcons;
 
     protected $rules = [
-        'name' => ['required', 'unique:macro_processes', 'min:5'],
+        'name' => ['required', 'unique:macro_processes', 'min:5', 'max:20'],
+        'description' => ['max:255'],
     ];
 
     public function getMacroProcessesProperty()
@@ -30,25 +32,7 @@ class MacroProcessForm extends Component
 
     public function getSvgIconsProperty()
     {
-
-        $iconDirectory = resource_path('views/components/svg/macroprocess');
-        $svgIcons = collect();
-
-        if (File::exists($iconDirectory)) {
-            $svgIcons = collect(File::files($iconDirectory))
-                ->map(function ($file) {
-                    return str_replace('.blade.php', '', $file->getFilename());
-                });
-            // return $svgIcons;
-        }
-
-        return $svgIcons;
-    }
-
-    public static function getIcons(): object
-    {
-        $svgIcons = self::getSvgIconsProperty();
-        return $svgIcons;
+        return getIcons::getSvgIcons();
     }
 
     public function submit()
@@ -74,7 +58,7 @@ class MacroProcessForm extends Component
             macro_processes::create($data);
 
             $this->clear();
-            $this->emit('updateList');
+            $this->emit('render');
 
             session()->flash('message', 'El registro has sido guardado de forma exitosa');
         } catch (\Exception $e) {
@@ -85,10 +69,7 @@ class MacroProcessForm extends Component
 
     public function clear()
     {
-        $this->name = '';
-        $this->macroprocess_id = '';
-        $this->description = '';
-        $this->selectedIcon = '';
+        $this->reset('name', 'macroprocess_id', 'description', 'selectedIcon');
     }
 
     public function render()

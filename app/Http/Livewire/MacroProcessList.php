@@ -9,8 +9,10 @@ use App\Http\Livewire\getIcons;
 
 class MacroProcessList extends Component
 {
-    public $MacroProcesses, $tabs, $macroProcessList, $currentMacroprocess;
+    protected $listeners = ['render'];
 
+
+    public $MacroProcesses, $tabs, $macroProcessList, $currentMacroprocess;
 
     //SHOW DATA
     public $selectedMacroProcess = null;
@@ -33,10 +35,6 @@ class MacroProcessList extends Component
     public $macroProcessCheckedList = [];
     public $activeTabs;
     public $collectionTabContent;
-
-
-
-    protected $listeners = ['updateList' => 'mount'];
 
     public function mount()
     {

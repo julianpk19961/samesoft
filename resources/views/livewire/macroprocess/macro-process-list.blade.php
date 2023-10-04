@@ -66,6 +66,7 @@
                                 <i class="fa fa-solid fa-circle-plus"></i>
                             </x-button>
 
+
                         </div>
                     </div>
                 </div>
@@ -189,21 +190,20 @@
         class="flex w-full items-center justify-end px-4 py-3 bg-gray-100 text-right sm:px-6 shadow sm:rounded-bl-md sm:rounded-br-md">
         @if($showModal)
 
-        <x-confirmation-modal wire:model="showModal" class="bg-slate-100">
+        <x-confirmation-modal wire:model.defer="showModal" class="bg-slate-100">
             <x-slot name="title">
                 {{ $selectedMacroProcess->name }}
             </x-slot>
 
             <x-slot name="content">
-                <form wire:submit.prevent="{{ $disable === true ? null :'updateName' }}" class=" bg-white sm:p-6 shadow {{ !isset($create) ? 'sm:rounded-tl-md sm:rounded-tr-md'
+                <form wire:submit.prevent="{{ $disable === true ? null :'updateMacroProcess' }}" class=" bg-white sm:p-6 shadow {{ !isset($create) ? 'sm:rounded-tl-md sm:rounded-tr-md'
                     : 'sm:rounded-tr-md' }}">
 
                     <div class="col-span-12 sm:col-span-10">
                         <x-label for="name" value="{{ __('Name') }}" />
                         <x-input id="updateName" type="text"
                             class="{{ $disable !== True ?:'bg-gray-300'  }} mb-2 block w-full" autocomplete="name"
-                            :disabled="$disable"
-                            wire:model.debounce.10s="{{ $disable === true ? 'showName':'updateName' }}" />
+                            :disabled="$disable" wire:model.defer="{{ $disable === true ? 'showName':'updateName' }}" />
                         <x-input-error for="name" class="mt-2" />
                     </div>
 
@@ -216,7 +216,7 @@
                                 <x-input id="macroprocess_id" type="text"
                                     class="{{ $disable !== True ?:'bg-gray-300'  }} mb-2 block w-full"
                                     autocomplete="name" :disabled="$disable"
-                                    wire:model.debounce.10s="{{ $disable === true ? 'showParent':'updateParent' }}" />
+                                    wire:model.defer="{{ $disable === true ? 'showParent':'updateParent' }}" />
                                 <x-input-error for="macroprocess_id" class="mt-2" />
                             </div>
 
@@ -224,29 +224,22 @@
                                 <x-label for="icon" value="{{ __('Icono') }}" />
 
                                 @if ($disable === true)
-                                    
+                                <x-input id="macroprocess_id" type="text" class="bg-gray-300 mb-2 block w-full"
+                                    autocomplete="name" :disabled="$disable" value="{{ $showIcon }}" />
                                 @else
-                                    
+
+                                <x-input-selection id="macroprocess_id" name="macroprocess_id" class="mb-2 block w-full"
+                                    wire:model.defer="updateIcon">
+
+                                    @foreach ($svgIcons as $icon)
+                                    <option value="{{ $icon }}" class="flex items-center">
+                                        {{ strtoupper($icon) }}
+                                    </option>
+                                    @endforeach
+
+                                </x-input-selection>
+
                                 @endif
-
-
-                                <x-input id="macroprocess_id" type="text"
-                                    class="{{ $disable !== True ?:'bg-gray-300'  }} mb-2 block w-full"
-                                    autocomplete="name" :disabled="$disable"
-                                    wire:model.debounce.10s="{{ $disable === true ? 'showIcon':'updateIcon' }}" />
-
-                                @if($disable === true)
-                                @isset($this->SvgIcons)
-                                @foreach ($SvgIcons as $iconOption)
-                                <option value="{{ $iconOption }}" class="flex items-center">
-                                    {{ strtoupper($iconOption) }}
-                                </option>
-                                @endforeach
-
-                                @endisset
-                                @endIf
-
-
                                 <x-input-error for="icon" class="mt-2" />
 
                             </div>
@@ -258,7 +251,7 @@
                         <textarea name="description" id="description" rows="3"
                             class="{{ $disable !== True ?:'bg-gray-300'  }} w-full mt-1 block border-gray-300 rounded-md shadow-sm"
                             @readonly($disable)
-                            wire:model.debounce.10s="{{ $disable === true ? 'showDescription':'updateDescription' }}" />{{
+                            wire:model.defer="{{ $disable === true ? 'showDescription':'updateDescription' }}" />{{
                         $selectedMacroProcess->description }}</textarea>
                         <x-input-error for="description" class="mt-2" />
                     </div>

@@ -16,12 +16,12 @@ class getIcons extends Component
         if (File::exists($path)) {
             $icons = collect(File::files($path))
                 ->map(function ($file) {
-                    str_replace('.blade.php', '', $file->getFilename());
+                    return str_replace('.blade.php', '', $file->getFilename());
                 });
         } else {
             $icons = collect();
         }
-
+        
         return $icons;
     }
 }

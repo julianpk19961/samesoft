@@ -94,7 +94,7 @@
                 <div
                     class="flex items-center justify-end px-4 py-3 bg-gray-100 text-right sm:px-6 shadow sm:rounded-bl-md sm:rounded-br-md">
 
-                    <x-secondary-button wire:click="clear" wire:loading.attr="disabled" class="m-1">
+                    <x-secondary-button wire:click="clear()" wire:loading.attr="disabled" class="m-1">
                         {{ __('Limpiar') }}
                     </x-secondary-button>
 
@@ -115,6 +115,8 @@
                         </x-slot>
 
                         <x-slot name="footer">
+
+
                             <x-secondary-button wire:click="$toggle('confirming')" wire:loading.attr="disabled">
                                 {{ __('Cancelar') }}
                             </x-secondary-button>
@@ -122,6 +124,9 @@
                             <x-button class="ml-2" wire:click="submit" wire:loading.attr="disabled" color="green">
                                 {{ __('Guardar') }}
                             </x-button>
+
+                            <span wire:loading.grid wire:target='submit'>Cargando...</span>
+
                         </x-slot>
 
 
