@@ -98,7 +98,7 @@
                         {{ __('Limpiar') }}
                     </x-secondary-button>
 
-                    <x-button wire:click="$toggle('confirming')" wire:loading.attr="disabled">
+                    <x-button wire:click="submit" wire:loading.attr="disabled">
                         {{ __('Guardar') }}
                     </x-button>
 
@@ -110,7 +110,7 @@
 
                         <x-slot name="content">
                             <div>
-                                {{ __("¿Está seguro de crear el macroproceso: $this->name?") }}
+                                {!! __("¿Está seguro de crear el macroproceso: <strong> $this->name? </strong>") !!}
                             </div>
                         </x-slot>
 
@@ -121,11 +121,11 @@
                                 {{ __('Cancelar') }}
                             </x-secondary-button>
 
-                            <x-button class="ml-2" wire:click="submit" wire:loading.attr="disabled" color="green">
+                            <x-button class="ml-2" wire:click="save" wire:loading.attr="disabled" color="green">
                                 {{ __('Guardar') }}
                             </x-button>
 
-                            <span wire:loading.grid wire:target='submit'>Cargando...</span>
+                            <span wire:loading.grid wire:target='save'>Cargando...</span>
 
                         </x-slot>
 

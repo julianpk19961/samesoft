@@ -25,6 +25,12 @@ class MacroProcessForm extends Component
         'description' => ['max:255'],
     ];
 
+    public function submit()
+    {
+        $this->validate();
+        $this->confirming = true;
+    }
+
     public function getMacroProcessesProperty()
     {
         return macro_processes::all();
@@ -35,11 +41,12 @@ class MacroProcessForm extends Component
         return getIcons::getSvgIcons();
     }
 
-    public function submit()
+    public function save()
     {
+        $this->validate();
+
         $this->confirming = false;
 
-        $this->validate();
 
         try {
             $data = [
