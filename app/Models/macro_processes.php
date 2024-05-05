@@ -10,7 +10,12 @@ class macro_processes extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'description', 'macroprocess_id', 'icon'];
+    protected $fillable = [
+        'name',
+        'description',
+        'macroprocess_id',
+        'icon'
+    ];
 
     public function areas(): HasMany
     {
