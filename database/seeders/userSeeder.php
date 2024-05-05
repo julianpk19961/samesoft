@@ -18,9 +18,9 @@ class userSeeder extends Seeder
     {
 
         $user = new User();
-        $user->name = 'Julian';
+        $user->name = 'destroywolves';
         $user->email = 'julianrodriguez19961@gmail.com';
-        $user->password = Hash::make('Samein321');
+        $user->password = Hash::make('password');
         $user->current_team_id = 1;
         $user->people_data_id = '1';
         $user->save();
